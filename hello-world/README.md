@@ -12,7 +12,7 @@
 
 ## About
 
-This is a basic example how to setup your Truffle development environment as well as testing and
+This is a basic example on how to setup your Truffle development environment as well as testing and
 deployment configuration to be compatible with Acala EVM+. It contains a rudimentary
 [HelloWorld](./contracts/HelloWorld.sol) smart contract and the required configurations and
 migrations in order to test and deploy it.
@@ -29,9 +29,9 @@ and yarn installed, we can jump right into creating a new Truffle project.
 
 </details>
 
-1. Open a terminal windon in a directory where you want your hello-world example to reside and
+1. Open a terminal window in a directory where you want your hello-world example to reside and
 create a directory for it and then initialize a yarn project within it, as well as add Truffle as a
-development dependency, with the following commands:
+dependency, with the following commands:
 
 ```
 mkdir hello-world
@@ -77,7 +77,7 @@ first enable the classic local development network by ucommenting the section in
 ```
 
 Now that the classic development network is enabled, let's add the Mandala configuration. Paste the
-followng configuration below the `development` network configuration:
+following configuration below the `development` network configuration:
 
 ```
     mandala: {
@@ -100,7 +100,7 @@ section reperesents additional paramerters of Acala EVM+.
 - `timeoutBlocks` and `confirmations` are set to our discression and we opted for the values above
 in this tutorial.
 
-Now that Mandala local development network is added to our project, lets take care of the remainig
+Now that Mandala local development network is added to our project, let's take care of the remaining
 configuration. Mocha timeout should be active, to make sure that we don't get stuck in a loop if
 something goes wrong during tests. For this line 85 (this is after the modifications) in
 `truffle-config.js` should be uncommented:
@@ -125,14 +125,16 @@ query: `Hello World!`. To do that, we can use the Truffle built-in utility `crea
 truffle create contract HelloWorld
 ```
 
-This command created a `HelloWorld.sol` file with a skeleton smart contract within `contracts` directory. First line of this smart contract should specify the exact version of Solidity we will be using, which is `0.8.9`:
+This command created a `HelloWorld.sol` file with a skeleton smart contract within `contracts`
+directory. First line of this smart contract should specify the exact version of Solidity we will be
+using, which is `0.8.9`:
 
 ```
 pragma solidity =0.8.9;
 ```
 
 Now let's add a public `helloWorld` variable and assign a `Hello World!` value to it in the
-beginnging of the smart contract. We sould also remove `public` visibility setting of the
+beginnging of the smart contract. We should also remove `public` visibility setting of the
 `constructor()` as the compiler ignores it anyway. Replace the body of the smart contract with the
 following code:
 
@@ -142,7 +144,9 @@ following code:
     constructor() {}
 ```
 
-**NOTE: Make sure that the `helloWorld` variable visibility is set to public, as this will cause the compiler to create a `helloWorld()` getter, which we will use to validate the successful deployment of our smart contract.**
+**NOTE: Make sure that the `helloWorld` variable visibility is set to public, as this will cause the
+compiler to create a `helloWorld()` getter, which we will use to validate the successful deployment
+of our smart contract.**
 
 <details>
     <summary>Your smart contract in HelloWorld.sol should look like this:</summary>
@@ -173,7 +177,7 @@ contains the compiled smart contract.
 
 ## Add a test
 
-To add a test, for the smart contract we can again use the Truffle built-in `create` utility:
+To add a test for the smart contract, we can again use the Truffle built-in `create` utility:
 
 ```
 truffle create test HelloWorld
@@ -181,7 +185,7 @@ truffle create test HelloWorld
 
 This creates a `hello_world.js` file in `test` directory and we can start writing the tests. If you
 open the file, you can see that Truffle has already imported our smart contract in the first line of
-the file, so we can jum pright into writing the tests. Fist we will create a `before` action. We
+the file, so we can jump right into writing the tests. First we will create a `before` action. We
 require one globally available variable, called `instance`, that will hold the information about the
 deployed smart contract. The `before` action in itself will just make sure that the smart contract
 is deployed. To add it, replace the current `it` block with the following code:
@@ -196,7 +200,7 @@ is deployed. To add it, replace the current `it` block with the following code:
 ```
 
 Now that we have everything set up, let's add a new `it` block, in which we will test that the right
-value is assigned to the helloWorld variable:
+value is assigned to the `helloWorld` variable:
 
 ```
   it("returns the right value after the contract is deployed", async function() {
@@ -244,16 +248,16 @@ lines into the `it` block:
 
 To be able to run the tests, we will add two additional scripts to the `package.json`. One script
 will be used to test on a traditional local development network and one will be used to test on a
-Mandala local development network. We added both into the `network` section of `truffle-config.js`.
-Add these lines to the `scripts` section of your `package.json`:
+Mandala local development network. We already added both into the `network` section of
+`truffle-config.js`. Add these lines to the `scripts` section of your `package.json`:
 
 ```
     "test": "truffle test",
     "test-mandala": "truffle test --network mandala"
 ```
 
-This script can be run using `yarn test` or `yarn test-mandala`, depending which network we want to
-use to run the tests.
+This script can be run using `yarn test` or `yarn test-mandala`, depending on which network we want
+to use to run the tests.
 
 **NOTE: To be able to run the tests in Truffle, we need to add a migration for the smart contracts
 that we are testing. We will do this in the next section of this tutorial.**
@@ -296,7 +300,7 @@ built-in utility `create` to create a migration file:
 truffle create migration HelloWorld
 ```
 
-The utlity created a barebones migration file in the `migrations` folder. First thing we need to do
+The utility created a barebones migration file in the `migrations` folder. First thing we need to do
 is import our smart contract into it. We do this with the following line of code at the top of the
 file:
 
@@ -313,7 +317,7 @@ module.exports = async function (deployer) {
 ```
 
 Now that we have the smart contract imported within the migration, we can deploy the smart contract.
-We do this by invoking `deployer`, which is defined in the fefinition of the function. Additionally
+We do this by invoking `deployer`, which is defined in the definition of the function. Additionally
 we will output the address of the deployed smart contract:
 
 ```
@@ -413,6 +417,6 @@ Summary
 ## Summary
 
 We have initiated an empty Truffle project and configured it to work with Acala EVM+. We added
-`HelloWorld.sol` smart contract, that can be compiled using `yarn build` and wrote a test for it
+`HelloWorld.sol` smart contract, that can be compiled using `yarn build`, and wrote a test for it,
 which can be run using `yarn test` or `yarn test-mandala`. Additionally we added the deploy script
 that can be run using `yarn deploy` or `yarn deploy-mandala`.
