@@ -1,0 +1,20 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jan Turk",
+  "license": "MIT",
+  "dependencies": {
+    "truffle": "^5.4.19"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.6.0"
+  },
+  "scripts": {
+    "build": "truffle compile",
+    "test": "truffle test",
+    "test-mandala": "truffle test --network mandala",
+    "deploy": "truffle migrate",
+    "deploy-mandala": "truffle migrate --network mandala"
+  }
+}
