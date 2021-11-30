@@ -5,7 +5,7 @@
 - [About](#about)
 - [Smart contract](#smart-contract)
 - [Test](#test)
-- [Script](#script)
+- [Deploy script](#deploy-script)
 - [Summary](#summary)
 
 ## About
@@ -100,7 +100,7 @@ This concludes our `Echo` smart contract.
 
 As the Echo smart contract is ready to be compiled, we can use the `yarn build` command (like we did
 in the [hello-world](../hello-world/package.json)) to compile the smart contract, which will create
-the `artifacts` directory and contain the compiled smart contract.
+the `build` directory and contain the compiled smart contract.
 
 ## Test
 
@@ -284,7 +284,7 @@ Echo deployed at: 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
 ✨  Done in 82.05s.
 ```
 
-## Script
+## Deploy script
 
 This deployment script will deploy the contract and output its address.
 
