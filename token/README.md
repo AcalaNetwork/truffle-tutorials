@@ -74,7 +74,7 @@ inheriting.
 This concludes our `Token` smart contract.
 
 <details>
-    <summary>Your contracts/Echo.sol should look like this:</summary>
+    <summary>Your contracts/Token.sol should look like this:</summary>
 
     // SPDX-License-Identifier: MIT
     pragma solidity =0.8.9;
@@ -89,7 +89,7 @@ This concludes our `Token` smart contract.
 
 </details>
 
-As the Echo smart contract is ready to be compiled, we can use the `yarn build` command (like we did
+As the Token smart contract is ready to be compiled, we can use the `yarn build` command (like we did
 in the [hello-world](../hello-world/package.json)) to compile the smart contract, which will create
 the `build` directory and contain the compiled smart contract.
 
@@ -159,7 +159,7 @@ contract:
 2. The `name` should equal `Token`.
 3. The `symbol` should equal `TKN`.
 4. The total supply of the smart contract should equal `1234567890`.
-5. The initial balance of the `deployer` accunt should equal `1234567890`.
+5. The initial balance of the `deployer` account should equal `1234567890`.
 6. The `user` account should have `0` balance.
 7. The allowances should be set to `0` when the smart contract is deployed.
 
