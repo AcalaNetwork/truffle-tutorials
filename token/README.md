@@ -27,14 +27,14 @@ abbriveration:
 To be able to import the `ERC20` from OpenZeppelin, we have to add `@openzeppelin/contracts` as a
 development dependency:
 
-```
+```bash
 yarn add --dev @openzeppelin/contracts
 ```
 
 Now that we have edded the `@openzeppelin/contracts` dependency, we can focus on building our smart
 contract. Your empty smart contract should look like this:
 
-```
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity =0.8.9;
 
@@ -46,21 +46,21 @@ contract Token{
 Import of the `ERC20` from `@openzeppelin/contracts` is done between the `pragma` definition and the
 start od the `contract` block:
 
-```
+```solidity
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 ```
 
 As we now have access to `ERC20.sol` from `@openzeppelin/contracts`, we can set the inheritance of
 our `Token` contract:
 
-```
+```solidity
 contract Token is ERC20 {
 ```
 
 As the `ERC20` already has the full fungible token standard implementation, we only have to add a
 `constructor()` function that sets all of the values:
 
-```
+```solidity
     constructor(uint256 _initialBalance) ERC20("Token", "TKN") public {
         _mint(msg.sender, _initialBalance);
     }
@@ -98,14 +98,14 @@ the `build` directory and contain the compiled smart contract.
 We will be using the truffle-assertions dependency to validate reverts, so we can add it to our
 project with:
 
-```
+```bash
 yarn add --dev truffle-assertions
 ```
 
 Your test file should be called `token.js` and the empty test along with the import statement and
 global varaible should look like this:
 
-```
+```js
 const Token = artifacts.require("Token");
 const truffleAssert = require('truffle-assertions');
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -128,7 +128,7 @@ The `instance` will store the deployed Token smart contract. The `deployer` and 
 will store the acounts that we will be using in the tests. Let's assign them values in the
 `beforeEach` action:
 
-```
+```js
   let instance;
   let deployer;
   let user;
@@ -142,7 +142,7 @@ will store the acounts that we will be using in the tests. Let's assign them val
 
 Our test will be split into two sections, `Deployment` and `Operation`:
 
-```
+```js
   describe("Deployment", function () {
 
   });
@@ -163,7 +163,7 @@ contract:
 6. The `user` account should have `0` balance.
 7. The allowances should be set to `0` when the smart contract is deployed.
 
-```
+```js
     it("should assert true", async function () {
       return assert.isTrue(true);
     });
@@ -225,7 +225,7 @@ ERC20 tokens:
 
 The contents of the `Operation` block should look like this:
 
-```
+```js
     describe("Transfer", function () {
       describe("transfer()", function () {
 
@@ -263,7 +263,7 @@ The `transfer()` example validates the following:
 
 These examples should look like this:
 
-```
+```js
         it("should update balances when transferring tokens", async function () {
           const initialDeployerBalance = await instance.balanceOf(deployer);
           const initialUserBalance = await instance.balanceOf(user);
@@ -318,7 +318,7 @@ The `approve()` example validates the following:
 
 These examples should look like this:
 
-```
+```js
         it("should grant allowance for an amount smaller than own balance", async function () {
           await instance.approve(user, 100, { from: deployer });
 
@@ -371,7 +371,7 @@ have.
 
 These examples should look like this:
 
-```
+```js
         it("should allow to increase the allowance to a total of less than the balance", async function () {
           await instance.approve(user, 100, { from: deployer });
           await instance.increaseAllowance(user, 50, { from: deployer });
@@ -427,7 +427,7 @@ These examples should look like this:
 
 We can now add the following test cases to our describe block:
 
-```
+```js
         it("should allow owner to decrease allowance", async function () {
           await instance.approve(user, 100, { from: deployer });
 
@@ -484,7 +484,7 @@ The `transferFrom()` example validates the following:
 
 These examples should look like this:
 
-```
+```js
         it("should allow transfer when allowance is given", async function () {
           await instance.approve(user, 1500, { from: deployer });
 
@@ -912,7 +912,7 @@ With that, our test is ready to be run.
 When you run the test with (for example) `yarn test`, your tests should pass with the
 following output:
 
-```
+```bash
 yarn test
 
 
@@ -984,7 +984,7 @@ This deployment script will deploy the contract and output its address.
 Within the `x_token.js` we will import the `Token` smart contract and have the blank migration
 ready. We do this by placing the following code within the file:
 
-```
+```js
 const Token = artifacts.require("Token");
 
 module.exports = async function (deployer) {
@@ -995,7 +995,7 @@ module.exports = async function (deployer) {
 Within the script, we first log the `Deploying Token` to the console, to signal the start of the
 deployment, then we deploy it and log its address to the console:
 
-```
+```js
   console.log("Deploying Token");
 
   await deployer.deploy(Token, 1234567890);
@@ -1020,7 +1020,7 @@ deployment, then we deploy it and log its address to the console:
 
 Running the `yarn deploy` script should return the following output:
 
-```
+```bash
 yarn deploy
 
 

@@ -33,7 +33,7 @@ and yarn installed, we can jump right into creating a new Truffle project.
 create a directory for it and then initialize a yarn project within it, as well as add Truffle as a
 dependency, with the following commands:
 
-```
+```bash
 mkdir hello-world
 cd hello-world
 yarn init --yes
@@ -52,14 +52,14 @@ Uncomment the following line in the `truffle-config.js`:
 **For me this is line 21, so even if there is any discrepancy between Truffle versions, this should
 narrow down the search.**
 
-```
+```js
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 ```
 
 As you may have noticed, we are importing `@truffle/hdwallet-provider`, so we need to add it to the
 project. Let's add it as a develoment dependency:
 
-```
+```bash
 yarn add --dev @truffle/hdwallet-provider
 ```
 
@@ -68,7 +68,7 @@ as well as Mandala local development network. Both need to be added to the confi
 first enable the classic local development network by ucommenting the section in `truffle-config.js`
 (just like *HDWalletProvider*, this section is from line 44 to line 48 in my file):
 
-```
+```js
     development: {
      host: "127.0.0.1",     // Localhost (default: none)
      port: 8545,            // Standard Ethereum port (default: none)
@@ -79,7 +79,7 @@ first enable the classic local development network by ucommenting the section in
 Now that the classic development network is enabled, let's add the Mandala configuration. Paste the
 following configuration below the `development` network configuration:
 
-```
+```js
     mandala: {
       provider: () => new HDWalletProvider(["0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f"],"http://127.0.0.1:3330"),
       network_id: 595,
@@ -107,14 +107,14 @@ configuration. Mocha timeout should be active, to make sure that we don't get st
 something goes wrong during tests. For this line 85 (this is after the modifications) in
 `truffle-config.js` should be uncommented:
 
-```
+```js
     timeout: 100000
 ```
 
 Lastly, let's set the compiler version to `0.8.9` as this is the Solidity version we will be using
 in our example smart contract. To do this, line 91 needs to be uncommented and modified to:
 
-```
+```js
       version: "0.8.9",    // Fetch exact version from solc-bin (default: truffle's version)
 ```
 
@@ -123,7 +123,7 @@ in our example smart contract. To do this, line 91 needs to be uncommented and m
 In this tutorial we will be adding a simple smart contract that only stores one value that we can
 query: `Hello World!`. To do that, we can use the Truffle built-in utility `create`:
 
-```
+```bash
 truffle create contract HelloWorld
 ```
 
@@ -131,7 +131,7 @@ This command created a `HelloWorld.sol` file with a skeleton smart contract with
 directory. First line of this smart contract should specify the exact version of Solidity we will be
 using, which is `0.8.9`:
 
-```
+```solidity
 pragma solidity =0.8.9;
 ```
 
@@ -140,7 +140,7 @@ beginnging of the smart contract. We should also remove `public` visibility sett
 `constructor()` as the compiler ignores it anyway. Replace the body of the smart contract with the
 following code:
 
-```
+```solidity
     string public helloWorld = 'Hello World!';
 
     constructor() {}
@@ -168,7 +168,7 @@ Now that we have the smart contract ready, we have to compile it. For this, we w
 script to the `package.json`. To do this, we have to add `scripts` section to it. We will be using
 Truffle's compile functionality, so the `scripts` section should look like this:
 
-```
+```json
   "scripts": {
     "build": "truffle compile"
   }
@@ -181,7 +181,7 @@ contains the compiled smart contract.
 
 To add a test for the smart contract, we can again use the Truffle built-in `create` utility:
 
-```
+```bash
 truffle create test HelloWorld
 ```
 
@@ -192,7 +192,7 @@ require one globally available variable, called `instance`, that will hold the i
 deployed smart contract. The `before` action in itself will just make sure that the smart contract
 is deployed. To add it, replace the current `it` block with the following code:
 
-```
+```js
   let instance;
 
   before("setup development environment", async function () {
@@ -204,7 +204,7 @@ is deployed. To add it, replace the current `it` block with the following code:
 Now that we have everything set up, let's add a new `it` block, in which we will test that the right
 value is assigned to the `helloWorld` variable:
 
-```
+```js
   it("returns the right value after the contract is deployed", async function() {
       
   });
@@ -214,7 +214,7 @@ The last step in building our example test is to get the value of the `helloWorl
 smart contract and assert that is is equal to `Hello World!`. To do this, place the following two
 lines into the `it` block:
 
-```
+```js
     const hello_world = await instance.helloWorld();
 
     expect(hello_world).to.equal("Hello World!");
@@ -253,7 +253,7 @@ will be used to test on a traditional local development network and one will be 
 Mandala local development network. We already added both into the `network` section of
 `truffle-config.js`. Add these lines to the `scripts` section of your `package.json`:
 
-```
+```json
     "test": "truffle test",
     "test-mandala": "truffle test --network mandala"
 ```
@@ -266,7 +266,7 @@ that we are testing. We will do this in the next section of this tutorial.**
 
 When you run the test with `yarn test`, your tests should pass with the following output:
 
-```
+```bash
 yarn test
 
 
@@ -298,7 +298,7 @@ HelloWorld deployed at: 0xC1a9a4fAed294383EC9918078417FA348090964b
 Finally let's add a script that deploys the example smart contract. We can again use Truffle
 built-in utility `create` to create a migration file:
 
-```
+```bash
 truffle create migration HelloWorld
 ```
 
@@ -306,7 +306,7 @@ The utility created a barebones migration file in the `migrations` folder. First
 is import our smart contract into it. We do this with the following line of code at the top of the
 file:
 
-```
+```js
 const HelloWorld = artifacts.require("HelloWorld");
 ```
 
@@ -314,7 +314,7 @@ To make sure that our migration will successfully deploy our smart contract, we 
 that our `deployer` is ready. To do that, we need to modfy the deployment function to be
 asynchronous. Replace the 3rd line of the migration with:
 
-```
+```js
 module.exports = async function (deployer) {
 ```
 
@@ -322,7 +322,7 @@ Now that we have the smart contract imported within the migration, we can deploy
 We do this by invoking `deployer`, which is defined in the definition of the function. Additionally
 we will output the address of the deployed smart contract:
 
-```
+```js
   console.log("Deploying HelloWorld");
 
   await deployer.deploy(HelloWorld);
@@ -353,14 +353,14 @@ All that is left to do is update the `scripts` section in the `package.json` wit
 `deploy-mandala` scripts. To add these scripts to your project, place the following lines within
 `scripts` section of the `package.json`:
 
-```
+```json
     "deploy": "truffle migrate",
     "deploy-mandala": "truffle migrate --network mandala"
 ```
 
 Running the `yarn deploy` script should return the following output:
 
-```
+```bash
 yarn deploy
 
 

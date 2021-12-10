@@ -25,7 +25,7 @@ emitted.
 
 Your empty smart contract should look like this:
 
-```
+```solidity
 pragma solidity =0.8.9;
 
 contract Echo{
@@ -41,7 +41,7 @@ changed and it will contain the new value as well as the number of times the `ec
 changed. The content of the smart contract, including these two variables and the event, looks like
 this:
 
-```
+```solidity
     string public echo;
     uint echoCount;
 
@@ -51,7 +51,7 @@ this:
 The `constructor` function can set the initial walue of the `echo` variable. Let's set it to
 `Deployed successfully!`, to signal that the smart contract is ready to use:
 
-```
+```solidity
     constructor() {
         echo = "Deployed successfully!";
     }
@@ -62,7 +62,7 @@ function should assign the new value to the `echo` variable, increment the `echo
 `NewEcho` event and return the input string. Let's call this function `scream()` as it will cause an
 echo:
 
-```
+```solidity
     function scream(string memory message) public returns(string memory){
         echo = message;
         echoCount += 1;
@@ -107,7 +107,7 @@ the `build` directory and contain the compiled smart contract.
 Your test file should be called `x_echo.js` and the empty test along with the import statement should
 look like this:
 
-```
+```js
 const Echo = artifacts.require("Echo");
 
 /*
@@ -123,7 +123,7 @@ contract("Echo", function (/* accounts */) {
 To prepare for the testing, we have to define `instance` global variable. The `instance` will store
 the deployed Echo smart contract. Let's assign it a value in the `beforeEach` action:
 
-```
+```js
   let instance;
 
   beforeEach("setup development environment", async function () {
@@ -133,7 +133,7 @@ the deployed Echo smart contract. Let's assign it a value in the `beforeEach` ac
 
 Our test will be split into two sections, `Deployment` and `Operation`:
 
-```
+```js
   describe("Deployment", function () {
 
   });
@@ -146,7 +146,7 @@ Our test will be split into two sections, `Deployment` and `Operation`:
 Within `Deployment` describe block we will ensure that the test suite works as expected and validate
 that the `echo` variable is set to `Deployed successfully!`:
 
-```
+```js
     it("should assert true", async function () {
       return assert.isTrue(true);
     });
@@ -166,7 +166,7 @@ We can now add the following test cases to our describe block:
 
 The test cases of the `Operation` describe block should look like this:
 
-```
+```js
     it("should update the echo variable", async function () {
       await instance.scream("Hello World!");
 
@@ -251,7 +251,7 @@ With that, our test is ready to be run.
 When you run the test with (for example) `yarn test-mandala`, your tests should pass with the
 following output:
 
-```
+```bash
 yarn test-mandala
 
 
@@ -291,7 +291,7 @@ This deployment script will deploy the contract and output its address.
 Within the `x_echo.js` we will import the `Echo` smart contract and have the blank migration ready.
 We do this by placing the following code within the file:
 
-```
+```js
 const Echo = artifacts.require("Echo");
 
 module.exports = async function (deployer) {
@@ -302,7 +302,7 @@ module.exports = async function (deployer) {
 Within the script, we first log the `Deploying Echo` to the console, to signal the start of the
 deployment, then we deploy it and log its address to the console:
 
-```
+```js
   console.log("Deploying Echo");
 
   await deployer.deploy(Echo);
@@ -328,7 +328,7 @@ deployment, then we deploy it and log its address to the console:
 
 Running the `yarn deploy-mandala` script should return the following output:
 
-```
+```bash
 yarn deploy-mandala
 
 
