@@ -16,7 +16,11 @@
     "build": "truffle compile",
     "test": "truffle test",
     "test-mandala": "truffle test --network mandala",
+    "test-mandala:pubDev": "truffle test --network mandalaPublicDev",
+    "test-mandala:CI": "truffle test --network mandalaCI",
     "deploy": "truffle migrate",
-    "deploy-mandala": "truffle migrate --network mandala"
+    "deploy-mandala": "truffle migrate --network mandala",
+    "deploy-mandala:pubDev": "truffle migrate --network mandalaPublicDev",
+    "deploy-mandala:CI": "truffle migrate --network mandalaCI"
   }
 }
