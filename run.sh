@@ -30,7 +30,7 @@ test_all() {
 
   for e in "${examples[@]}"
   do
-    echo "--------------- testing truffle ${e} ---------------"
+    echo "--------------- Running Truffle tests ${e} ---------------"
 
     cd  "${ROOT}/${e}"
 
