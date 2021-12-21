@@ -48,7 +48,7 @@ test_all() {
   done
 
   echo "+++++++++++++++++++++++"
-  echo "truffle test failed: $failed"
+  echo "Number of failed Truffle tests: $failed"
   echo "+++++++++++++++++++++++"
 }
 
