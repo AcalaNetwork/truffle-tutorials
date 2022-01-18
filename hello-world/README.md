@@ -81,7 +81,7 @@ following configuration below the `development` network configuration:
 
 ```js
     mandala: {
-      provider: () => new HDWalletProvider(["0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f"],"http://127.0.0.1:3330"),
+      provider: () => new HDWalletProvider(["0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f"],"http://127.0.0.1:8545"),
       network_id: 595,
       gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 2100001
       gas: 34132001,
