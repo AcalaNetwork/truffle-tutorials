@@ -22,8 +22,8 @@ test_all() {
   examples=(
     "hello-world"
     "echo"
-    "token"
-    "NFT"
+    # "token"
+    # "NFT"
   )
 
   ROOT=$(pwd)
