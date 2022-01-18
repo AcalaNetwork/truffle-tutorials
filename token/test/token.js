@@ -47,7 +47,7 @@ contract("Token", function (accounts) {
       expect(balance.toNumber()).to.equal(1234567890);
     });
 
-    it("should not assign value to a radnom addresss", async function() {
+    it("should not assign value to a random addresss", async function() {
       const balance = await instance.balanceOf(user);
 
       expect(balance.toNumber()).to.equal(0);
