@@ -192,7 +192,7 @@ contract:
       expect(balance.toNumber()).to.equal(1234567890);
     });
 
-    it("should not assign value to a radnom addresss", async function() {
+    it("should not assign value to a random addresss", async function() {
       const balance = await instance.balanceOf(user);
 
       expect(balance.toNumber()).to.equal(0);
@@ -630,7 +630,7 @@ With that, our test is ready to be run.
           expect(balance.toNumber()).to.equal(1234567890);
         });
 
-        it("should not assign value to a radnom addresss", async function() {
+        it("should not assign value to a random addresss", async function() {
           const balance = await instance.balanceOf(user);
 
           expect(balance.toNumber()).to.equal(0);
@@ -937,7 +937,7 @@ Token deployed at: 0xAF525B4ad720E87c1f695AfaD4A508CE6439c324
       ✓ should set the correct token symbol (57ms)
       ✓ should set the correct total supply (48ms)
       ✓ should set the correct deployer balance (48ms)
-      ✓ should not assign value to a radnom addresss (38ms)
+      ✓ should not assign value to a random addresss (38ms)
       ✓ should not assign allowance upon deployment (45ms)
     Operation
       Transfer

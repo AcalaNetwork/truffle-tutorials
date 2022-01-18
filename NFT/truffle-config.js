@@ -25,7 +25,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const mandalaConfig = (endpointUrl) => ({
   provider: () =>
-    new HDWalletProvider(['0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f'], endpointUrl),
+    new HDWalletProvider(['0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f', '0x4daddf7d5d2a9059e8065cb3ec50beabe2c23c7d6b3e380c1de8c40269acd85c'], endpointUrl),
   network_id: 595,
   gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
   gas: 42032000,
