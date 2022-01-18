@@ -45,7 +45,7 @@ module.exports = {
    */
 
   networks: {
-    mandala: mandalaConfig("http://127.0.0.1:3330"),
+    mandala: mandalaConfig("http://127.0.0.1:8545"),
     mandalaPublicDev: mandalaConfig("https://tc7-eth.aca-dev.network"),
     mandalaCI: mandalaConfig("http://eth-rpc-adapter-server:8545"),
     // Useful for testing. The `development` name is special - truffle uses it by default
