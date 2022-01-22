@@ -76,25 +76,43 @@ first enable the classic local development network by ucommenting the section in
     },
 ```
 
-Now that the classic development network is enabled, let's add the Mandala configuration. Paste the
-following configuration below the `development` network configuration:
+Now that the classic development network is enabled, let's add the Mandala configuration. As the
+public test network has the same configuration as the local development network, let's add a helper
+function to the config. Make sure to add this helper method above the `module.exports` (you can
+place it below as well, just not within). We will call it `mandalaConfig` and expect one argument
+to be passed to it. The argument passed to it is called the `endpointUrl` and specifies the RPC
+enpoint, to which the Truffle connects to. Copy the method into your `truffle-config.js`:
 
 ```js
-    mandala: {
-      provider: () => new HDWalletProvider(["0xa872f6cbd25a0e04a08b1e21098017a9e6194d101d75e13111f71410c59cd57f"],"http://127.0.0.1:8545"),
-      network_id: 595,
-      gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 2100001
-      gas: 34132001,
-      timeoutBlocks: 25,
-      confirmations: 0
-    },
+const mandalaConfig = (endpointUrl) => ({
+  provider: () =>
+    new HDWalletProvider(mnemonicPhrase, endpointUrl),
+  network_id: 595,
+  gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
+  gas: 42032000,
+  timeoutBlocks: 25,
+  confirmations: 0
+});
 ```
 
 Let's break down this configuration:
 
-- `provider` uses the `HDWalletProvided` that we imported. We pass the default Mandala development
-account to it as well as the default URL for the ETH-RPC adapter for local Mandala development
-network.
+- `provider` uses the `HDWalletProvided` that we imported. We pass the mnemonic prase, from which
+the accounts are derived, as well as the URL for the RPC endpoint of the desired network. You might
+have noticed that we haven't specified `mnemonicPhrase` anywhere just yet. Let's do it. Above the
+`mandalaConfig` add the following mnemonic:
+
+```js
+const mnemonicPhrase = 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm';
+```
+
+**NOTE: This mnemonic phrase is used in all of the examples and represents the default development
+accounts of Acala EVM+. These accounts are not safe to use and you should use your own, following
+the secret management guidelines of
+[`HDWalletProvider`](https://github.com/trufflesuite/truffle-hdwallet-provider).**
+
+Now that we analyzed the `provider`, let's move on to the other arguments:
+
 - `network_id` is the default network ID of the development Mandala network.
 - `gasPrice` is the default gas price for the local development Mandala network. Commented out
 section reperesents additional paramerters of Acala EVM+.
@@ -102,9 +120,18 @@ section reperesents additional paramerters of Acala EVM+.
 - `timeoutBlocks` and `confirmations` are set to our discression and we opted for the values above
 in this tutorial.
 
+To be able to use the local development network and public test network within the project, we have
+to add them to the `networks` section of the config using the `mandalaConfig` helper. We do this by
+pasting the following two lines of code into it:
+
+```js
+    mandala: mandalaConfig("http://127.0.0.1:8545"),
+    mandalaPublicDev: mandalaConfig("https://tc7-eth.aca-dev.network"),
+```
+
 Now that Mandala local development network is added to our project, let's take care of the remaining
 configuration. Mocha timeout should be active, to make sure that we don't get stuck in a loop if
-something goes wrong during tests. For this line 85 (this is after the modifications) in
+something goes wrong during tests. For this line 92 (this is after the modifications) in
 `truffle-config.js` should be uncommented:
 
 ```js
@@ -112,7 +139,7 @@ something goes wrong during tests. For this line 85 (this is after the modificat
 ```
 
 Lastly, let's set the compiler version to `0.8.9` as this is the Solidity version we will be using
-in our example smart contract. To do this, line 91 needs to be uncommented and modified to:
+in our example smart contract. To do this, line 98 needs to be uncommented and modified to:
 
 ```js
       version: "0.8.9",    // Fetch exact version from solc-bin (default: truffle's version)
