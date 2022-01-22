@@ -26,7 +26,7 @@ const mnemonicPhrase = 'fox sight canyon orphan hotel grow hedgehog build bless 
 
 const mandalaConfig = (endpointUrl) => ({
   provider: () =>
-  new HDWalletProvider(mnemonicPhrase, endpointUrl),
+    new HDWalletProvider(mnemonicPhrase, endpointUrl),
   network_id: 595,
   gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
   gas: 42032000,
