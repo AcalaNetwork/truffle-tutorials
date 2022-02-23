@@ -1,0 +1,28 @@
+{
+  "name": "truffle-tutorial-precompiled-token",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jan Turk",
+  "license": "MIT",
+  "dependencies": {
+    "truffle": "^5.4.19"
+  },
+  "devDependencies": {
+    "@acala-network/contracts": "^4.0.0",
+    "@openzeppelin/contracts": "^4.4.1",
+    "@truffle/hdwallet-provider": "^1.6.0",
+    "ethers": "^5.5.3",
+    "truffle-assertions": "^0.9.2"
+  },
+  "scripts": {
+    "build": "truffle compile",
+    "test": "truffle test",
+    "test-mandala": "truffle test --network mandala",
+    "test-mandala:pubDev": "truffle test --network mandalaPublicDev",
+    "test-mandala:CI": "truffle test --network mandalaCI",
+    "get-info": "truffle exec scripts/getACAinfo.js",
+    "get-info-mandala": "truffle exec scripts/getACAinfo.js --network mandala",
+    "get-info-mandala:pubDev": "truffle exec scripts/getACAinfo.js --network mandalaPublicDev",
+    "get-info-mandala:CI": "truffle exec scripts/getACAinfo.js --network mandalaCI"
+  }
+}

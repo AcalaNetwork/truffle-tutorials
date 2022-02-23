@@ -7,7 +7,8 @@ build_all() {
     -t truffle-tutorial-hello-world \
     -t truffle-tutorial-echo \
     -t truffle-tutorial-token \
-    -t truffle-tutorial-nft'
+    -t truffle-tutorial-nft \
+    -t truffle-tutorial-precompiled-token'
 }
 
 rebuild_all() {
@@ -15,7 +16,8 @@ rebuild_all() {
     -t truffle-tutorial-hello-world \
     -t truffle-tutorial-echo \
     -t truffle-tutorial-token \
-    -t truffle-tutorial-nft'
+    -t truffle-tutorial-nft \
+    -t truffle-tutorial-precompiled-token'
 }
 
 test_all() {
@@ -24,6 +26,7 @@ test_all() {
     "echo"
     "token"
     "NFT"
+    "precompiled-token"
   )
 
   ROOT=$(pwd)
