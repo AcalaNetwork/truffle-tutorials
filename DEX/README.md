@@ -5,7 +5,7 @@
 - [About](#about)
 - [Smart contract](#smart-contract)
 - [Test](#test)
-- [Script](#script)
+- [User journey](#user-journey)
 - [Summary](#summary)
 
 ## About
