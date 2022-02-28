@@ -8,7 +8,8 @@ build_all() {
     -t truffle-tutorial-echo \
     -t truffle-tutorial-token \
     -t truffle-tutorial-nft \
-    -t truffle-tutorial-precompiled-token'
+    -t truffle-tutorial-precompiled-token \
+    -t truffle-tutorial-dex'
 }
 
 rebuild_all() {
@@ -17,7 +18,8 @@ rebuild_all() {
     -t truffle-tutorial-echo \
     -t truffle-tutorial-token \
     -t truffle-tutorial-nft \
-    -t truffle-tutorial-precompiled-token'
+    -t truffle-tutorial-precompiled-token \
+    -t truffle-tutorial-dex'
 }
 
 test_all() {
@@ -27,6 +29,7 @@ test_all() {
     "token"
     "NFT"
     "precompiled-token"
+    "DEX"
   )
 
   ROOT=$(pwd)
