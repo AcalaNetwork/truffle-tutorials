@@ -8,7 +8,7 @@
     "truffle": "^5.4.19"
   },
   "devDependencies": {
-    "@acala-network/contracts": "^4.0.0",
+    "@acala-network/contracts": "^4.2.0",
     "@openzeppelin/contracts": "^4.4.0",
     "@truffle/hdwallet-provider": "^1.6.0",
     "ethers": "~5.5.4",
