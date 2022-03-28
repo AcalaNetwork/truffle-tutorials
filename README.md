@@ -36,3 +36,8 @@ for them in the documentation and hardcode them into our project.
 6. [DEX](./DEX/README.md): This tutorial utilizes the predeployed `DEX` smart contract to swap the
 ERC20 tokens of the  predeployed `Token` smart contracts, which we instantiate with the help of the
 `ADDRESS` utility.
+
+7. [EVM](./EVM/README.md): This tutorial utilizes the predeployed `EVM` smart contract to manage the
+account preferences and the smart contract that the account maintains. It introduces the publishing
+of the smart contracts in the Acala EVM+ as well as enabling and disabling the developer mode of the
+account directly in the Acala EVM+.
