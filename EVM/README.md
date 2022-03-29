@@ -1105,7 +1105,7 @@ Interacting with EVM using accounts 0x75E480dB528101a381Ce68544611C169Ad7EB342 a
 
 
 Instantiating DEX and token smart contracts
-EVM instantiated with address 0x0000000000000000000000000000000000000801
+EVM instantiated with address 0x0000000000000000000000000000000000000800
 
 
 Preparing addresses for the journey
