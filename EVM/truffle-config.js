@@ -28,8 +28,8 @@ const mandalaConfig = (endpointUrl) => ({
   provider: () =>
     new HDWalletProvider(mnemonicPhrase, endpointUrl),
   network_id: 595,
-  gasPrice: 200786445289, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
-  gas: 42032000,
+  gasPrice: 0x2ef7c803ea, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
+  gas: 0x329b140,
   timeoutBlocks: 25,
   confirmations: 0
 });
