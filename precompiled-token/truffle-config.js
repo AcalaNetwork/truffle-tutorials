@@ -25,8 +25,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const mnemonicPhrase = 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm';
 
 const mandalaConfig = (endpointUrl) => ({
-  provider: () =>
-    new HDWalletProvider(mnemonicPhrase, endpointUrl),
+  provider: () => new HDWalletProvider(mnemonicPhrase, endpointUrl),
   network_id: 595,
   gasPrice: 0x2f03a803ea, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
   gas: 0x329b140,
@@ -46,9 +45,9 @@ module.exports = {
    */
 
   networks: {
-    mandala: mandalaConfig("http://127.0.0.1:8545"),
-    mandalaPublicDev: mandalaConfig("https://tc7-eth.aca-dev.network"),
-    mandalaCI: mandalaConfig("http://eth-rpc-adapter-server:8545"),
+    mandala: mandalaConfig('http://127.0.0.1:8545'),
+    mandalaPublicDev: mandalaConfig('https://tc7-eth.aca-dev.network'),
+    mandalaCI: mandalaConfig('http://eth-rpc-adapter-server:8545'),
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
@@ -56,10 +55,10 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 8545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
-    },
+      host: '127.0.0.1', // Localhost (default: none)
+      port: 8545, // Standard Ethereum port (default: none)
+      network_id: '*' // Any network (default: none)
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -95,7 +94,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.9",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: '0.8.9' // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
