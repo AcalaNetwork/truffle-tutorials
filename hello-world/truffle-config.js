@@ -18,6 +18,7 @@
  *
  */
 
+require("dotenv").config({ path: ".env" });
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
@@ -58,7 +59,20 @@ module.exports = {
       host: '127.0.0.1', // Localhost (default: none)
       port: 8545, // Standard Ethereum port (default: none)
       network_id: '*' // Any network (default: none)
-    }
+    },
+    acala: {
+      provider: () => {
+        return new HDWalletProvider(
+          process.env.MNEMONIC,
+          // To use this local host, needed to run this: ENDPOINT_URL=wss://acala-rpc-0.aca-api.network npx @acala-network/eth-rpc-adapter@latest
+          // "http://localhost:8545"
+          "https://eth-rpc-acala.aca-api.network/"
+        );
+      },
+      network_id: 787,
+      gasPrice: "0x2f259f03ea",
+      gas: "0x6fc3540",
+    }, 
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -87,9 +101,9 @@ module.exports = {
   },
 
   // Set default mocha options here, use special reporters etc.
-  mocha: {
-    timeout: 100000
-  },
+  //mocha: {
+  //  timeout: 100000
+  //},
 
   // Configure your compilers
   compilers: {
