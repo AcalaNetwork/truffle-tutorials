@@ -105,8 +105,9 @@ contract('PrecompiledDEX', function (accounts) {
         await truffleAssert.reverts(instance.getSwapTargetAmount([ACA, AUSD], 0), 'DEX: supplyAmount is zero');
       });
 
-      it('should revert for an incompatible path', async function () {
-        await truffleAssert.reverts(instance.getSwapTargetAmount([ACA, DOT], 100));
+      it('should return 0 for an incompatible path', async function () {
+        const expected_target = await instance.getSwapTargetAmount([ACA, DOT], 100);
+        expect(expected_target).to.deep.equal(web3.utils.toBN('0'));
       });
 
       it('should return a swap target amount', async function () {
@@ -143,8 +144,9 @@ contract('PrecompiledDEX', function (accounts) {
         await truffleAssert.reverts(instance.getSwapSupplyAmount([ACA, AUSD], 0), 'DEX: targetAmount is zero');
       });
 
-      it('should revert for an incompatible path', async function () {
-        await truffleAssert.reverts(instance.getSwapSupplyAmount([ACA, DOT], 100));
+      it('should return 0 for an incompatible path', async function () {
+        const expected_supply = await instance.getSwapSupplyAmount([ACA, DOT], 100);
+        expect(expected_supply).to.deep.equal(web3.utils.toBN('0'));
       });
 
       it('should return the supply amount', async function () {
