@@ -5,7 +5,7 @@ import "@acala-network/contracts/dex/IDEX.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@acala-network/contracts/schedule/ISchedule.sol";
  
-import "@acala-network/contracts/utils/Address.sol";
+import "@acala-network/contracts/utils/AcalaAddress.sol";
 
 contract AdvancedEscrow is ADDRESS {
     IDEX dex = IDEX(ADDRESS.DEX);

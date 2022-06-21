@@ -1,7 +1,7 @@
 const DEXContract = artifacts.require('@acala-network/contracts/build/contracts/DEX');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA, AUSD, DEX, DOT } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DEX, DOT } = require('@acala-network/contracts/utils/AcalaAddress');
 const { formatUnits, parseUnits } = require('ethers/lib/utils');
 
 module.exports = async function (callback) {

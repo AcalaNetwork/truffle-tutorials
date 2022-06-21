@@ -6,7 +6,7 @@ const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');
 require('console.mute');
 
-const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/AcalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
 const provider = new WsProvider(ENDPOINT_URL);

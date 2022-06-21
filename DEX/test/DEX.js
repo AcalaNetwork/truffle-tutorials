@@ -4,7 +4,7 @@ const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contr
 const truffleAssert = require('truffle-assertions');
 const { parseUnits } = require('ethers/lib/utils');
 
-const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require('@acala-network/contracts/utils/AcalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 /*

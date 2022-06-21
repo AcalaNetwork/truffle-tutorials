@@ -1,6 +1,6 @@
 const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA } = require('@acala-network/contracts/utils/Address');
+const { ACA } = require('@acala-network/contracts/utils/AcalaAddress');
 const { formatUnits } = require('ethers/lib/utils');
 
 module.exports = async function (callback) {

@@ -89,7 +89,7 @@ const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contr
 
 const truffleAssert = require("truffle-assertions");
 
-const { EVM } = require("@acala-network/contracts/utils/Address");
+const { EVM } = require("@acala-network/contracts/utils/AcalaAddress");
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /*
@@ -486,7 +486,7 @@ With that, our test is ready to be run.
 
     const truffleAssert = require("truffle-assertions");
 
-    const { EVM } = require("@acala-network/contracts/utils/Address");
+    const { EVM } = require("@acala-network/contracts/utils/AcalaAddress");
     const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
     /*
@@ -805,7 +805,7 @@ precompiled `EVM` and `Token` smart contracts from `@acala-network/contracts` sh
 const EVMContract = artifacts.require("@acala-network/contracts/build/contracts/EVM");
 const TokenContract = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { EVM } = require("@acala-network/contracts/utils/Address");
+const { EVM } = require("@acala-network/contracts/utils/AcalaAddress");
 
 module.exports = async function(callback) {
   try {
@@ -975,7 +975,7 @@ This concludes our script.
     const EVMContract = artifacts.require("@acala-network/contracts/build/contracts/EVM");
     const TokenContract = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { EVM } = require("@acala-network/contracts/utils/Address");
+    const { EVM } = require("@acala-network/contracts/utils/AcalaAddress");
 
     module.exports = async function(callback) {
       try {

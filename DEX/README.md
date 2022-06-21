@@ -90,7 +90,7 @@ const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contr
 const truffleAssert = require("truffle-assertions");
 const { parseUnits } = require("ethers/lib/utils");
 
-const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/Address");
+const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/AcalaAddress");
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /*
@@ -646,7 +646,7 @@ With that, our test is ready to be run.
     const truffleAssert = require("truffle-assertions");
     const { parseUnits } = require("ethers/lib/utils");
 
-    const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/Address");
+    const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/AcalaAddress");
     const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
     /*
@@ -1146,7 +1146,7 @@ The empty user journey script together with the imports of `ACA`, `AUSD`, `DEX` 
 const DEXContract = artifacts.require("@acala-network/contracts/build/contracts/DEX");
 const TokenContract = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { ACA, AUSD, DEX, DOT } = require("@acala-network/contracts/utils/Address");
+const { ACA, AUSD, DEX, DOT } = require("@acala-network/contracts/utils/AcalaAddress");
 const { formatUnits, parseUnits } = require("ethers/lib/utils");
 
 module.exports = async function(callback) {
@@ -1370,7 +1370,7 @@ This concludes our script.
     const DEXContract = artifacts.require("@acala-network/contracts/build/contracts/DEX");
     const TokenContract = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { ACA, AUSD, DEX, DOT } = require("@acala-network/contracts/utils/Address");
+    const { ACA, AUSD, DEX, DOT } = require("@acala-network/contracts/utils/AcalaAddress");
     const { formatUnits, parseUnits } = require("ethers/lib/utils");
 
 

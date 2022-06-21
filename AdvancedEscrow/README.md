@@ -196,7 +196,7 @@ import "@acala-network/contracts/schedule/ISchedule.sol";
 As the predeployed smart contracts always have the same address, no matter the network (public, public test network or local development network), we can use the `Address` utility of `@acala-network/contracts` dependency to set them in our smart contract:
 
 ```solidity
-import "@acala-network/contracts/utils/Address.sol";
+import "@acala-network/contracts/utils/AcalaAddress.sol";
 ```
 
 Now that we have sorted out all of the imports, we need to make sure that our `AdvancedEscrow` smart contract inherits the `ADDRESS` smart contract utility in order to be able to access the addresses of the predeployed contracts stored within it. We have to add the inheritance statement to the contract definition line:
@@ -402,7 +402,7 @@ This wraps up our `AdvancedEscrow` smart contract.
     import "@acala-network/contracts/dex/IDEX.sol";
     import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
     import "@acala-network/contracts/schedule/ISchedule.sol";
-    import "@acala-network/contracts/utils/Address.sol";
+    import "@acala-network/contracts/utils/AcalaAddress.sol";
     
     contract AdvancedEscrow is ADDRESS {
         IDEX dex = IDEX(ADDRESS.DEX);
@@ -732,7 +732,7 @@ const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');
 require('console.mute');
 
-const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/AcalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
 const provider = new WsProvider(ENDPOINT_URL);
@@ -1118,7 +1118,7 @@ This concludes our test.
     const truffleAssert = require('truffle-assertions');
     require('console.mute');
 
-    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/AcalaAddress');
     const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
     const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
     const provider = new WsProvider(ENDPOINT_URL);
@@ -1522,7 +1522,7 @@ imports, constants and the empty script should look like this:
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/AcalaAddress');
 const { formatUnits } = require('ethers/lib/utils');
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
@@ -1831,7 +1831,7 @@ This concludes our script.
     const AdvancedEscrow = artifacts.require('AdvancedEscrow');
     const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/Address');
+    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/AcalaAddress');
     const { formatUnits } = require('ethers/lib/utils');
     const { ApiPromise, WsProvider } = require('@polkadot/api');
 

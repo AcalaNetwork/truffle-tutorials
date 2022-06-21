@@ -92,7 +92,7 @@ The test file with import statements and an empty test should look like this:
 ```javascript
 const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { ACA } = require("@acala-network/contracts/utils/Address");
+const { ACA } = require("@acala-network/contracts/utils/AcalaAddress");
 
 /*
  * uncomment accounts to access the test accounts made available by the
@@ -167,7 +167,7 @@ With that, our test is ready to be run.
 
     const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { ACA } = require("@acala-network/contracts/utils/Address");
+    const { ACA } = require("@acala-network/contracts/utils/AcalaAddress");
 
     /*
     * uncomment accounts to access the test accounts made available by the
@@ -270,7 +270,7 @@ Within the `getACAinfo.js` we will import the `Token` precompiled smart contract
 ```javascript
 const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { ACA } = require("@acala-network/contracts/utils/Address");
+const { ACA } = require("@acala-network/contracts/utils/AcalaAddress");
 const { formatUnits } = require("ethers/lib/utils")
 
 module.exports = async function(callback) {
@@ -328,7 +328,7 @@ This concludes our script.
 
     const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { ACA } = require("@acala-network/contracts/utils/Address");
+    const { ACA } = require("@acala-network/contracts/utils/AcalaAddress");
     const { formatUnits } = require("ethers/lib/utils")
 
     module.exports = async function(callback) {
