@@ -10,6 +10,7 @@ build_all() {
     -t truffle-tutorial-nft \
     -t truffle-tutorial-precompiled-token \
     -t truffle-tutorial-dex \
+    -t truffle-tutorial-advanced-escrow \
     -t truffle-tutorial-evm'
 }
 
@@ -21,6 +22,7 @@ rebuild_all() {
     -t truffle-tutorial-nft \
     -t truffle-tutorial-precompiled-token \
     -t truffle-tutorial-dex \
+    -t truffle-tutorial-advanced-escrow \
     -t truffle-tutorial-evm'
 }
 
@@ -33,13 +35,16 @@ test_all() {
     "precompiled-token"
     "DEX"
     "EVM"
+    "advanced-escrow"
   )
 
   ROOT=$(pwd)
 
   for e in "${examples[@]}"
   do
-    echo "--------------- Running Truffle tests ${e} ---------------"
+    echo "-------------------------------------------------------------"
+    echo "---------- testing truffle examples: ${e} ----------"
+    echo "-------------------------------------------------------------"
 
     cd  "${ROOT}/${e}"
 

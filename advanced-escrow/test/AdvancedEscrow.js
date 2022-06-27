@@ -1,6 +1,6 @@
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
-const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX');
-const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token');
+const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX.json');
+const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token.json');
 
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');

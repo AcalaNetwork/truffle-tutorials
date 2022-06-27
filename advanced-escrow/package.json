@@ -10,7 +10,7 @@
   "devDependencies": {
     "@acala-network/contracts": "^4.2.0",
     "@openzeppelin/contracts": "^4.4.2",
-    "@polkadot/api": "^8.3.1",
+    "@polkadot/api": "8.1.1",
     "@truffle/hdwallet-provider": "^1.6.0",
     "console.mute": "^0.3.0",
     "ethers": "~5.5.0",
