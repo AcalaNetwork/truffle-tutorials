@@ -1,7 +1,7 @@
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaAddress');
 const { formatUnits } = require('ethers/lib/utils');
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 

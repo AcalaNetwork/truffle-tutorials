@@ -1,12 +1,13 @@
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
-const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX.json');
-const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token.json');
+// const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX');
+const PrecompiledDEX = artifacts.require('IDEX');
+const PrecompiledToken = artifacts.require('Token');
 
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');
 require('console.mute');
 
-const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
 const provider = new WsProvider(ENDPOINT_URL);

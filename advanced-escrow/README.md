@@ -185,34 +185,44 @@ the project:
 yarn add --dev @acala-network/contracts@4.2.0 @openzeppelin/contracts@4.4.2
 ```
 
-As we will be using predeployed IDEX and IScheduler as well as the precompiled ERC20 contracts, we need to import them after the `pragma` statement:
+As we will be using predeployed IDEX and IScheduler as well as the precompiled Token contracts, we
+need to import them after the `pragma` statement:
 
 ```solidity
 import "@acala-network/contracts/dex/IDEX.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@acala-network/contracts/token/Token.sol";
 import "@acala-network/contracts/schedule/ISchedule.sol";
 ```
 
-As the predeployed smart contracts always have the same address, no matter the network (public, public test network or local development network), we can use the `Address` utility of `@acala-network/contracts` dependency to set them in our smart contract:
+As each of the predeployed smart contracts has a predetermined address, we can use one of the
+`Address` utlities of `@acala-network/contracts` dependency to set them in our smart contract. There
+are the `AcalaAddress`, the `KaruraAddress` and the `MandalaAddress` utilities. We can use the
+`MandalaAddress` in this example:
 
 ```solidity
-import "@acala-network/contracts/utils/Address.sol";
+import "@acala-network/contracts/utils/MandalaAddress.sol";
 ```
 
-Now that we have sorted out all of the imports, we need to make sure that our `AdvancedEscrow` smart contract inherits the `ADDRESS` smart contract utility in order to be able to access the addresses of the predeployed contracts stored within it. We have to add the inheritance statement to the contract definition line:
+Now that we have sorted out all of the imports, we need to make sure that our `AdvancedEscrow` smart
+contract inherits the `ADDRESS` smart contract utility in order to be able to access the addresses
+of the predeployed contracts stored within it. We have to add the inheritance statement to the
+contract definition line:
 
 ```solidity
 contract AdvancedEscrow is ADDRESS {
 ```
 
-We can finally start working on the actual smart contract. We will be interacting with the predeployed DEX and Schedule smart contracts, so we can define them at the beginning of the smart contract:
+We can finally start working on the actual smart contract. We will be interacting with the
+predeployed DEX and Schedule smart contracts, so we can define them at the beginning of the smart
+contract:
 
 ```solidity
    IDEX public dex = IDEX(ADDRESS.DEX);
-   ISchedule public schedule = ISchedule(ADDRESS.Schedule);
+   ISchedule public schedule = ISchedule(ADDRESS.SCHEDULE);
 ```
 
-Our smart contract will support one active escrow at the time, but will allow reuse. Let’s add a counter to be able to check the previous escrows, as well as the Escrow structure:
+Our smart contract will support one active escrow at the time, but will allow reuse. Let’s add a
+counter to be able to check the previous escrows, as well as the Escrow structure:
 
 ```solidity
    uint256 public numberOfEscrows;
@@ -230,7 +240,9 @@ Our smart contract will support one active escrow at the time, but will allow re
    }
 ```
 
-As you can see, we added a counter for `numberOfEscrows`, a mapping to list said `escrows` and a struct to keep track of the information included inside an escrow. The `Escrow` structure holds the following information:
+As you can see, we added a counter for `numberOfEscrows`, a mapping to list said `escrows` and a
+struct to keep track of the information included inside an escrow. The `Escrow` structure holds the
+following information:
 
 - `initiator`: The account that initiated and funded the escrow
 - `beneficiary`; The account that is to receive the escrowed funds
@@ -238,9 +250,11 @@ As you can see, we added a counter for `numberOfEscrows`, a mapping to list said
 - `egressToken`: Address of the token that will be used to pay out of the escrow
 - `AusdValue`: Value of the escrow in AUSD
 - `deadline`: Block number of the block after which, the escrow will be paid out
-- `completed`: As an escrow can only be active or fulfilled, this can be represented as by a boolean value.
+- `completed`: As an escrow can only be active or fulfilled, this can be represented as by a boolean
+value.
 
-The constructor in itself will only be used to set the value of `numberOfEscrows` to 0. While Solidity is a null-state language, it’s still better to be explicit where we can:
+The constructor in itself will only be used to set the value of `numberOfEscrows` to 0. While
+Solidity is a null-state language, it’s still better to be explicit where we can:
 
 ```solidity
    constructor() {
@@ -248,7 +262,8 @@ The constructor in itself will only be used to set the value of `numberOfEscrows
    }
 ```
 
-Now we can add the event that will notify listeners of the change in the smart contract called `EscrowUpdate`:
+Now we can add the event that will notify listeners of the change in the smart contract called
+`EscrowUpdate`:
 
 ```solidity
    event EscrowUpdate(
@@ -264,11 +279,21 @@ The event contains information about the current state of the latest escrow:
 - `initiator`: Address of the account that initiated the escrow
 - `beneficiary`: Address of the account to which the escrow should be released to
 - `AusdValue`: Value of the escrow represented in the AUSD currency
-- `fulfilled`: As an escrow can only be active or fulfilled, this can be represented as by a boolean value.
+- `fulfilled`: As an escrow can only be active or fulfilled, this can be represented as by a boolean
+value.
 
-Let’s start writing the logic of the escrow. As we said, there should only be one escrow active at any given time and the initiator should transfer the tokens to the smart contract before initiating the escrow. When initiating escrow, the initiator should pass the address of the token they allocated to the smart contract as the function call parameter in order for the smart contract to be able to swap that token for AUSD. All of the escrows are held in AUSD, but they can be paid out in an alternative currency. None of the addresses passed to the function should be `0x0` and the period in which the escrow should automatically be completed, expressed in the number of blocks, should not be 0 as well.
+Let’s start writing the logic of the escrow. As we said, there should only be one escrow active at
+any given time and the initiator should transfer the tokens to the smart contract before initiating
+the escrow. When initiating escrow, the initiator should pass the address of the token they
+allocated to the smart contract as the function call parameter in order for the smart contract to be
+able to swap that token for AUSD. All of the escrows are held in AUSD, but they can be paid out in
+an alternative currency. None of the addresses passed to the function should be `0x0` and the period
+in which the escrow should automatically be completed, expressed in the number of blocks, should not
+be 0 as well.
 
-Once all of the checks are passed and the ingress tokens are swapped for AUSD, the  completion of escrow should be scheduled with the predeployed `Schedule`. Afterwards, the escrow information should be saved to the storage and `EscrowUpdate` should be emitted.
+Once all of the checks are passed and the ingress tokens are swapped for AUSD, the  completion of
+escrow should be scheduled with the predeployed `Schedule`. Afterwards, the escrow information
+should be saved to the storage and `EscrowUpdate` should be emitted.
 
 All of this happens within `initiateEscrow` function:
 
@@ -292,13 +317,13 @@ All of this happens within `initiateEscrow` function:
        require(ingressToken_ != address(0), "Escrow: ingressToken_ is 0x0");
        require(period != 0, "Escrow: period is 0");
  
-       uint256 contractBalance = ERC20(ingressToken_).balanceOf(address(this));
+       uint256 contractBalance = Token(ingressToken_).balanceOf(address(this));
        require(
            contractBalance >= ingressValue,
            "Escrow: contract balance is less than ingress value"
        );
  
-       ERC20 AUSDtoken = ERC20(ADDRESS.AUSD);
+       Token AUSDtoken = Token(ADDRESS.AUSD);
        uint256 initalAusdBalance = AUSDtoken.balanceOf(address(this));
       
        address[] memory path = new address[](2);
@@ -331,7 +356,11 @@ All of this happens within `initiateEscrow` function:
    }
 ```
 
-As you might have noticed, we didn’t set the `egressToken` value of the escrow. This is up to the beneficiary. Default payout is AUSD; but the beneficiary should be able to set a different token if they wish. As this is completely their prerogative, they are the only party that can change this value. To be able to do so, we need to add an additional `setEgressToken` function. Only the latest escrow’s egress token value can be modified and only if the latest escrow is still active:
+As you might have noticed, we didn’t set the `egressToken` value of the escrow. This is up to the
+beneficiary. Default payout is AUSD; but the beneficiary should be able to set a different token if
+they wish. As this is completely their prerogative, they are the only party that can change this
+value. To be able to do so, we need to add an additional `setEgressToken` function. Only the latest
+escrow’s egress token value can be modified and only if the latest escrow is still active:
 
 ```solidity
    function setEgressToken(address egressToken_) public returns (bool) {
@@ -347,7 +376,15 @@ As you might have noticed, we didn’t set the `egressToken` value of the escrow
    }
 ```
 
-Another thing that you might have noticed is that we scheduled a call of `completeEscrow` in the `scheduleCall` call to the `Schedule` predeployed smart contract. We need to add this function as well. The function should only be able to be run if the current escrow is still active and only by the `AdvancedEscrow` smart contract or by the initiator of the escrow. The smart contract is able to call the `completeEscrow` function, because it passed a pre-signed transaction for this call to the `Schedule` smart contract. The function should swap the AUSD held in escrow for the desired egress token, if one is specified. Otherwise, the AUSD is released to the beneficiary. Once the funds are allocated to the beneficiary, the escrow should be marked as completed and `EscrowUpdate` event, notifying the listeners of the completion, should be emitted:
+Another thing that you might have noticed is that we scheduled a call of `completeEscrow` in the
+`scheduleCall` call to the `Schedule` predeployed smart contract. We need to add this function as
+well. The function should only be able to be run if the current escrow is still active and only by
+the `AdvancedEscrow` smart contract or by the initiator of the escrow. The smart contract is able to
+call the `completeEscrow` function, because it passed a pre-signed transaction for this call to the
+`Schedule` smart contract. The function should swap the AUSD held in escrow for the desired egress
+token, if one is specified. Otherwise, the AUSD is released to the beneficiary. Once the funds are
+allocated to the beneficiary, the escrow should be marked as completed and `EscrowUpdate` event,
+notifying the listeners of the completion, should be emitted:
 
 ```solidity
    function completeEscrow() public returns (bool) {
@@ -359,7 +396,7 @@ Another thing that you might have noticed is that we scheduled a call of `comple
        );
  
        if(currentEscrow.egressToken != address(0)){
-           ERC20 token = ERC20(currentEscrow.egressToken);
+           Token token = Token(currentEscrow.egressToken);
            uint256 initialBalance = token.balanceOf(address(this));
           
            address[] memory path = new address[](2);
@@ -374,7 +411,7 @@ Another thing that you might have noticed is that we scheduled a call of `comple
  
            token.transfer(currentEscrow.beneficiary, finalBalance - initialBalance);
        } else {
-           ERC20 AusdToken = ERC20(ADDRESS.AUSD);
+           Token AusdToken = Token(ADDRESS.AUSD);
            AusdToken.transfer(currentEscrow.beneficiary, currentEscrow.AusdValue);
        }
  
@@ -396,22 +433,23 @@ This wraps up our `AdvancedEscrow` smart contract.
 <details>
 	<summary>Your `contracts/AdvancedEscrow.sol` should look like this:</summary>
 
-	//SPDX-License-Identifier: Unlicense
-    pragma solidity ^0.8.0;
-    
+	  // SPDX-License-Identifier: MIT
+    pragma solidity =0.8.9;
+
     import "@acala-network/contracts/dex/IDEX.sol";
-    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+    import "@acala-network/contracts/token/Token.sol";
     import "@acala-network/contracts/schedule/ISchedule.sol";
-    import "@acala-network/contracts/utils/Address.sol";
     
+    import "@acala-network/contracts/utils/MandalaAddress.sol";
+
     contract AdvancedEscrow is ADDRESS {
         IDEX dex = IDEX(ADDRESS.DEX);
-        ISchedule schedule = ISchedule(ADDRESS.Schedule);
-        
+        ISchedule schedule = ISchedule(ADDRESS.SCHEDULE);
+
         uint256 public numberOfEscrows;
-        
+
         mapping(uint256 => Escrow) public escrows;
-    
+
         struct Escrow {
             address initiator;
             address beneficiary;
@@ -421,18 +459,18 @@ This wraps up our `AdvancedEscrow` smart contract.
             uint256 deadline;
             bool completed;
         }
-    
+
         constructor() {
             numberOfEscrows = 0;
         }
-    
+
         event EscrowUpdate(
             address indexed initiator,
             address indexed beneficiary,
             uint256 AusdValue,
             bool fulfilled
         );
-    
+
         function initiateEscrow(
             address beneficiary_,
             address ingressToken_,
@@ -451,14 +489,14 @@ This wraps up our `AdvancedEscrow` smart contract.
             require(beneficiary_ != address(0), "Escrow: beneficiary_ is 0x0");
             require(ingressToken_ != address(0), "Escrow: ingressToken_ is 0x0");
             require(period != 0, "Escrow: period is 0");
-        
-            uint256 contractBalance = ERC20(ingressToken_).balanceOf(address(this));
+
+            uint256 contractBalance = Token(ingressToken_).balanceOf(address(this));
             require(
                 contractBalance >= ingressValue,
                 "Escrow: contract balance is less than ingress value"
             );
-        
-            ERC20 AUSDtoken = ERC20(ADDRESS.AUSD);
+
+            Token AUSDtoken = Token(ADDRESS.AUSD);
             uint256 initalAusdBalance = AUSDtoken.balanceOf(address(this));
             
             address[] memory path = new address[](2);
@@ -476,7 +514,7 @@ This wraps up our `AdvancedEscrow` smart contract.
                 period,
                 abi.encodeWithSignature("completeEscrow()")
             );
-        
+
             Escrow storage currentEscrow = escrows[numberOfEscrows];
             currentEscrow.initiator = msg.sender;
             currentEscrow.beneficiary = beneficiary_;
@@ -489,19 +527,19 @@ This wraps up our `AdvancedEscrow` smart contract.
             
             return true;
         }
-    
+
         function setEgressToken(address egressToken_) public returns (bool) {
             require(!escrows[numberOfEscrows - 1].completed, "Escrow: already completed");
             require(
                 escrows[numberOfEscrows - 1].beneficiary == msg.sender,
                 "Escrow: sender is not beneficiary"
             );
-        
+
             escrows[numberOfEscrows - 1].egressToken = egressToken_;
-        
+
             return true;
         }
-    
+
         function completeEscrow() public returns (bool) {
             Escrow storage currentEscrow = escrows[numberOfEscrows - 1];
             require(!currentEscrow.completed, "Escrow: escrow already completed");
@@ -509,9 +547,9 @@ This wraps up our `AdvancedEscrow` smart contract.
                 msg.sender == currentEscrow.initiator || msg.sender == address(this),
                 "Escrow: caller is not initiator or this contract"
             );
-        
+
             if(currentEscrow.egressToken != address(0)){
-                ERC20 token = ERC20(currentEscrow.egressToken);
+                Token token = Token(currentEscrow.egressToken);
                 uint256 initialBalance = token.balanceOf(address(this));
                 
                 address[] memory path = new address[](2);
@@ -523,22 +561,22 @@ This wraps up our `AdvancedEscrow` smart contract.
                 );
                 
                 uint256 finalBalance = token.balanceOf(address(this));
-        
+
                 token.transfer(currentEscrow.beneficiary, finalBalance - initialBalance);
             } else {
-                ERC20 AusdToken = ERC20(ADDRESS.AUSD);
+                Token AusdToken = Token(ADDRESS.AUSD);
                 AusdToken.transfer(currentEscrow.beneficiary, currentEscrow.AusdValue);
             }
-        
+
             currentEscrow.completed = true;
-        
+
             emit EscrowUpdate(
                 currentEscrow.initiator,
                 currentEscrow.beneficiary,
                 currentEscrow.AusdValue,
                 true
             );
-        
+
             return true;
         }
     }
@@ -725,14 +763,14 @@ empty test should look like this:
 
 ```javascript
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
-const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX');
-const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token');
+const PrecompiledDEX = artifacts.require('IDEX');
+const PrecompiledToken = artifacts.require('Token');
 
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');
 require('console.mute');
 
-const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
 const provider = new WsProvider(ENDPOINT_URL);
@@ -1111,14 +1149,14 @@ This concludes our test.
     <summary>Your test/AdvancedEscrow.js should look like this:</summary>
 
     const AdvancedEscrow = artifacts.require('AdvancedEscrow');
-    const PrecompiledDEX = artifacts.require('@acala-network/contracts/build/contracts/DEX');
-    const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token');
+    const PrecompiledDEX = artifacts.require('IDEX');
+    const PrecompiledToken = artifacts.require('Token');
 
     const { ApiPromise, WsProvider } = require('@polkadot/api');
     const truffleAssert = require('truffle-assertions');
     require('console.mute');
 
-    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/Address');
+    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
     const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
     const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
     const provider = new WsProvider(ENDPOINT_URL);
@@ -1522,7 +1560,7 @@ imports, constants and the empty script should look like this:
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaAddress');
 const { formatUnits } = require('ethers/lib/utils');
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
@@ -1831,7 +1869,7 @@ This concludes our script.
     const AdvancedEscrow = artifacts.require('AdvancedEscrow');
     const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/Address');
+    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaAddress');
     const { formatUnits } = require('ethers/lib/utils');
     const { ApiPromise, WsProvider } = require('@polkadot/api');
 
