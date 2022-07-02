@@ -77,9 +77,12 @@ predeployed smart contract. The test file in our case is called `DEX.js`. Within
 `DEX` and `Token` from `@acala-network/contracts` dependency and assign it to `PrecompiledDEX` and
 `PrecompiledToken` variables. The `ACA`, `AUSD`, `LP_ACA_AUSD`, `DOT`, `RENBTC` and `DEX`, which are
 the exports from the `ADDRESS` utility of `@acala-network/contracts` dependency, are imported and
-they hold the values of the addresses of the predeployed smart contracts. We are also importing
-`truffleAssert` and `parseUnits` in order to ease our verification of the expected values and we are
-defining the `NULL_ADDRESS` constant, so we don't have to copy-paste the value when needed.
+they hold the values of the addresses of the predeployed smart contracts. The `MandalaAddress`
+utility holds the values of the predeployed smart contracts in the local development and Mandala
+network and we will be using this one. There are also `AcalaNetwork` and `KaruraNetwork`, that hold
+the addresses of their respective networks. We are also importing `truffleAssert` and `parseUnits`
+in order to ease our verification of the expected values and we are defining the `NULL_ADDRESS`
+constant, so we don't have to copy-paste the value when needed.
 
 The test file with import statements and an empty test should look like this:
 
@@ -90,7 +93,7 @@ const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contr
 const truffleAssert = require("truffle-assertions");
 const { parseUnits } = require("ethers/lib/utils");
 
-const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/Address");
+const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require("@acala-network/contracts/utils/MandalaAddress");
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /*
@@ -419,14 +422,14 @@ The section should look like this:
         const event = tx.logs[0].event;
         const sender = tx.logs[0].args.sender;
         const event_path = tx.logs[0].args.path;
-        const supply_amount = tx.logs[0].args.supply_amount;
-        const target_amount = tx.logs[0].args.target_amount;
+        const supplyAmount = tx.logs[0].args.supplyAmount;
+        const targetAmount = tx.logs[0].args.targetAmount;
 
         expect(event).to.equal("Swaped");
         expect(sender).to.equal(deployer);
         expect(event_path).to.deep.equal(path);
-        expect(supply_amount).to.deep.equal(web3.utils.toBN(100));
-        expect(target_amount).to.deep.equal(expected_target);
+        expect(supplyAmount).to.deep.equal(web3.utils.toBN(100));
+        expect(targetAmount).to.deep.equal(expected_target);
       });
 ```
 
@@ -494,14 +497,14 @@ The section should look like this:
         const event = tx.logs[0].event;
         const sender = tx.logs[0].args.sender;
         const event_path = tx.logs[0].args.path;
-        const supply_amount = tx.logs[0].args.supply_amount;
-        const target_amount = tx.logs[0].args.target_amount;
+        const supplyAmount = tx.logs[0].args.supplyAmount;
+        const targetAmount = tx.logs[0].args.targetAmount;
 
         expect(event).to.equal("Swaped");
         expect(sender).to.equal(deployer);
         expect(event_path).to.deep.equal(path);
-        expect(supply_amount).to.deep.equal(expected_supply);
-        expect(target_amount).to.deep.equal(web3.utils.toBN(100));
+        expect(supplyAmount).to.deep.equal(expected_supply);
+        expect(targetAmount).to.deep.equal(web3.utils.toBN(100));
       });
 ```
 
@@ -625,13 +628,13 @@ The section should look like this:
         const sender = tx.logs[0].args.sender;
         const tokenA = tx.logs[0].args.tokenA;
         const tokenB = tx.logs[0].args.tokenB;
-        const remove_share = tx.logs[0].args.remove_share;
+        const removeShare = tx.logs[0].args.removeShare;
 
         expect(event).to.equal("RemovedLiquidity");
         expect(sender).to.equal(deployer);
         expect(tokenA).to.deep.equal(ACA);
         expect(tokenB).to.deep.equal(AUSD);
-        expect(remove_share).to.deep.equal(web3.utils.toBN(1));
+        expect(removeShare).to.deep.equal(web3.utils.toBN(1));
       });
 ```
 
@@ -865,14 +868,14 @@ With that, our test is ready to be run.
             const event = tx.logs[0].event;
             const sender = tx.logs[0].args.sender;
             const event_path = tx.logs[0].args.path;
-            const supply_amount = tx.logs[0].args.supply_amount;
-            const target_amount = tx.logs[0].args.target_amount;
+            const supplyAmount = tx.logs[0].args.supplyAmount;
+            const targetAmount = tx.logs[0].args.targetAmount;
 
             expect(event).to.equal("Swaped");
             expect(sender).to.equal(deployer);
             expect(event_path).to.deep.equal(path);
-            expect(supply_amount).to.deep.equal(web3.utils.toBN(100));
-            expect(target_amount).to.deep.equal(expected_target);
+            expect(supplyAmount).to.deep.equal(web3.utils.toBN(100));
+            expect(targetAmount).to.deep.equal(expected_target);
           });
         });
 
@@ -931,14 +934,14 @@ With that, our test is ready to be run.
             const event = tx.logs[0].event;
             const sender = tx.logs[0].args.sender;
             const event_path = tx.logs[0].args.path;
-            const supply_amount = tx.logs[0].args.supply_amount;
-            const target_amount = tx.logs[0].args.target_amount;
+            const supplyAmount = tx.logs[0].args.supplyAmount;
+            const targetAmount = tx.logs[0].args.targetAmount;
 
             expect(event).to.equal("Swaped");
             expect(sender).to.equal(deployer);
             expect(event_path).to.deep.equal(path);
-            expect(supply_amount).to.deep.equal(expected_supply);
-            expect(target_amount).to.deep.equal(web3.utils.toBN(100));
+            expect(supplyAmount).to.deep.equal(expected_supply);
+            expect(targetAmount).to.deep.equal(web3.utils.toBN(100));
           });
         });
 
@@ -1041,13 +1044,13 @@ With that, our test is ready to be run.
             const sender = tx.logs[0].args.sender;
             const tokenA = tx.logs[0].args.tokenA;
             const tokenB = tx.logs[0].args.tokenB;
-            const remove_share = tx.logs[0].args.remove_share;
+            const removeShare = tx.logs[0].args.removeShare;
 
             expect(event).to.equal("RemovedLiquidity");
             expect(sender).to.equal(deployer);
             expect(tokenA).to.deep.equal(ACA);
             expect(tokenB).to.deep.equal(AUSD);
-            expect(remove_share).to.deep.equal(web3.utils.toBN(1));
+            expect(removeShare).to.deep.equal(web3.utils.toBN(1));
           });
         });
       });
@@ -1057,7 +1060,7 @@ With that, our test is ready to be run.
 
 **NOTE: If you want to interact with other precompiled and predeployed smart contracts, you can take
 a look at the list of all of the smart contracts supported in the
-[`ADDRESS` utility](https://github.com/AcalaNetwork/predeploy-contracts/blob/master/contracts/utils/Address.js)
+[`ADDRESS` utility](https://github.com/AcalaNetwork/predeploy-contracts/blob/master/contracts/utils/MandalaAddress.js)
 and tweak this example test.**
 
 When you run the test with (for example) `yarn test-mandala`, your tests should pass with the

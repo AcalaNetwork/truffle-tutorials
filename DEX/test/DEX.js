@@ -4,7 +4,7 @@ const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contr
 const truffleAssert = require('truffle-assertions');
 const { parseUnits } = require('ethers/lib/utils');
 
-const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require('@acala-network/contracts/utils/Address');
+const { ACA, AUSD, LP_ACA_AUSD, DOT, RENBTC, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 /*
@@ -208,14 +208,14 @@ contract('PrecompiledDEX', function (accounts) {
         const event = tx.logs[0].event;
         const sender = tx.logs[0].args.sender;
         const event_path = tx.logs[0].args.path;
-        const supply_amount = tx.logs[0].args.supply_amount;
-        const target_amount = tx.logs[0].args.target_amount;
+        const supplyAmount = tx.logs[0].args.supplyAmount;
+        const targetAmount = tx.logs[0].args.targetAmount;
 
         expect(event).to.equal('Swaped');
         expect(sender).to.equal(deployer);
         expect(event_path).to.deep.equal(path);
-        expect(supply_amount).to.deep.equal(web3.utils.toBN(100));
-        expect(target_amount).to.deep.equal(expected_target);
+        expect(supplyAmount).to.deep.equal(web3.utils.toBN(100));
+        expect(targetAmount).to.deep.equal(expected_target);
       });
     });
 
@@ -274,14 +274,14 @@ contract('PrecompiledDEX', function (accounts) {
         const event = tx.logs[0].event;
         const sender = tx.logs[0].args.sender;
         const event_path = tx.logs[0].args.path;
-        const supply_amount = tx.logs[0].args.supply_amount;
-        const target_amount = tx.logs[0].args.target_amount;
+        const supplyAmount = tx.logs[0].args.supplyAmount;
+        const targetAmount = tx.logs[0].args.targetAmount;
 
         expect(event).to.equal('Swaped');
         expect(sender).to.equal(deployer);
         expect(event_path).to.deep.equal(path);
-        expect(supply_amount).to.deep.equal(expected_supply);
-        expect(target_amount).to.deep.equal(web3.utils.toBN(100));
+        expect(supplyAmount).to.deep.equal(expected_supply);
+        expect(targetAmount).to.deep.equal(web3.utils.toBN(100));
       });
     });
 
@@ -375,13 +375,13 @@ contract('PrecompiledDEX', function (accounts) {
         const sender = tx.logs[0].args.sender;
         const tokenA = tx.logs[0].args.tokenA;
         const tokenB = tx.logs[0].args.tokenB;
-        const remove_share = tx.logs[0].args.remove_share;
+        const removeShare = tx.logs[0].args.removeShare;
 
         expect(event).to.equal('RemovedLiquidity');
         expect(sender).to.equal(deployer);
         expect(tokenA).to.deep.equal(ACA);
         expect(tokenB).to.deep.equal(AUSD);
-        expect(remove_share).to.deep.equal(web3.utils.toBN(1));
+        expect(removeShare).to.deep.equal(web3.utils.toBN(1));
       });
     });
   });
