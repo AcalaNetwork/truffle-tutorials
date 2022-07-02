@@ -1,7 +1,7 @@
 const EVMContract = artifacts.require('@acala-network/contracts/build/contracts/EVM');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { EVM } = require('@acala-network/contracts/utils/Address');
+const { EVM } = require('@acala-network/contracts/utils/MandalaAddress');
 
 module.exports = async function (callback) {
   try {
