@@ -81,7 +81,9 @@ predeployed smart contract. The test file in our case is called `precompiled_tok
 Within it we import the `Token` from `@acala-netowkr/contracts` dependency and assign it to
 `PrecompiledToken` variable. The `ACA`, which is an export from the `ADDRESS` utility of
 `@acala-network/contracts` dependency, is imported and it holds the value of the address of
-the `ACA` token.
+the `ACA` token. The `MandalaAddress` utility holds the values of the predeployed smart contracts in
+the local development and Mandala network and we will be using this one. There are also
+`AcalaNetwork` and `KaruraNetwork`, that hold the addresses of their respective networks.
 
 **NOTE: The ACA ERC20 token mirrors the balance of the native ACA currency, so you are able
 to transfer ACA within your smart contract the same way you would transfer a non-native ERC20
@@ -92,7 +94,7 @@ The test file with import statements and an empty test should look like this:
 ```javascript
 const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { ACA } = require("@acala-network/contracts/utils/Address");
+const { ACA } = require("@acala-network/contracts/utils/MandalaAddress");
 
 /*
  * uncomment accounts to access the test accounts made available by the
@@ -167,7 +169,7 @@ With that, our test is ready to be run.
 
     const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { ACA } = require("@acala-network/contracts/utils/Address");
+    const { ACA } = require("@acala-network/contracts/utils/MandalaAddress");
 
     /*
     * uncomment accounts to access the test accounts made available by the
@@ -270,7 +272,7 @@ Within the `getACAinfo.js` we will import the `Token` precompiled smart contract
 ```javascript
 const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-const { ACA } = require("@acala-network/contracts/utils/Address");
+const { ACA } = require("@acala-network/contracts/utils/MandalaAddress");
 const { formatUnits } = require("ethers/lib/utils")
 
 module.exports = async function(callback) {
@@ -328,7 +330,7 @@ This concludes our script.
 
     const PrecompiledToken = artifacts.require("@acala-network/contracts/build/contracts/Token");
 
-    const { ACA } = require("@acala-network/contracts/utils/Address");
+    const { ACA } = require("@acala-network/contracts/utils/MandalaAddress");
     const { formatUnits } = require("ethers/lib/utils")
 
     module.exports = async function(callback) {
