@@ -119,7 +119,7 @@ pasting the following two lines of code into it:
 
 ```js
     mandala: mandalaConfig("http://127.0.0.1:8545"),
-    mandalaPublicDev: mandalaConfig("http://mandala-eth-rpc-adapter.thechaindata.com/public"),
+    mandalaPublicDev: mandalaConfig("https://acala-mandala-adapter.api.onfinality.io/public"),
 ```
 
 Now that Mandala local development network is added to our project, let's take care of the remaining

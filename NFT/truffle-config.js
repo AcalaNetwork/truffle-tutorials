@@ -46,7 +46,7 @@ module.exports = {
 
   networks: {
     mandala: mandalaConfig('http://127.0.0.1:8545'),
-    mandalaPublicDev: mandalaConfig('http://mandala-eth-rpc-adapter.thechaindata.com/public'),
+    mandalaPublicDev: mandalaConfig('https://acala-mandala-adapter.api.onfinality.io/public'),
     mandalaCI: mandalaConfig('http://eth-rpc-adapter-server:8545'),
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
