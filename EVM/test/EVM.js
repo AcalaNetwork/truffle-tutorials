@@ -89,7 +89,7 @@ contract('PrecompiledEVM', function (accounts) {
         truffleAssert.eventEmitted(
           await instance.transferMaintainer(contract.address, user, { from: deployer }),
           'TransferredMaintainer',
-          { contract_address: contract.address, new_maintainer: user }
+          { contractAddress: contract.address, newMaintainer: user }
         );
       });
 
@@ -137,7 +137,7 @@ contract('PrecompiledEVM', function (accounts) {
         truffleAssert.eventEmitted(
           await instance.publishContract(contract.address, { from: deployer }),
           'ContractPublished',
-          { contract_address: contract.address }
+          { contractAddress: contract.address }
         );
       });
     });
@@ -180,7 +180,7 @@ contract('PrecompiledEVM', function (accounts) {
         }
 
         truffleAssert.eventEmitted(await instance.developerDisable({ from: user }), 'DeveloperDisabled', {
-          account_address: user
+          accountAddress: user
         });
       });
 
@@ -221,7 +221,7 @@ contract('PrecompiledEVM', function (accounts) {
         }
 
         truffleAssert.eventEmitted(await instance.developerEnable({ from: user }), 'DeveloperEnabled', {
-          account_address: user
+          accountAddress: user
         });
       });
 
