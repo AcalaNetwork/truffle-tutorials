@@ -109,14 +109,14 @@ contract('PrecompiledEVM', function (accounts) {
       it('should revert if trying to transfer maintainer of 0x0', async function () {
         await truffleAssert.reverts(
           instance.transferMaintainer(NULL_ADDRESS, user, { from: deployer }),
-          'EVM: the contract_address is the zero address'
+          'EVM: the contractAddress is the zero address'
         );
       });
 
       it('should revert when trying to transfer maintainer to 0x0 address', async function () {
         await truffleAssert.reverts(
           instance.transferMaintainer(contract.address, NULL_ADDRESS, { from: deployer }),
-          'EVM: the new_maintainer is the zero address'
+          'EVM: the newMaintainer is the zero address'
         );
       });
     });
@@ -129,7 +129,7 @@ contract('PrecompiledEVM', function (accounts) {
       it('should revert when trying to publish 0x0 contract', async function () {
         await truffleAssert.reverts(
           instance.publishContract(NULL_ADDRESS, { from: deployer }),
-          'EVM: the contract_address is the zero address'
+          'EVM: the contractAddress is the zero address'
         );
       });
 
