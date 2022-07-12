@@ -89,7 +89,7 @@ contract('PrecompiledEVM', function (accounts) {
         truffleAssert.eventEmitted(
           await instance.transferMaintainer(contract.address, user, { from: deployer }),
           'TransferredMaintainer',
-          { contract_address: contract.address, new_maintainer: user }
+          { contractAddress: contract.address, newMaintainer: user }
         );
       });
 
@@ -109,14 +109,14 @@ contract('PrecompiledEVM', function (accounts) {
       it('should revert if trying to transfer maintainer of 0x0', async function () {
         await truffleAssert.reverts(
           instance.transferMaintainer(NULL_ADDRESS, user, { from: deployer }),
-          'EVM: the contract_address is the zero address'
+          'EVM: the contractAddress is the zero address'
         );
       });
 
       it('should revert when trying to transfer maintainer to 0x0 address', async function () {
         await truffleAssert.reverts(
           instance.transferMaintainer(contract.address, NULL_ADDRESS, { from: deployer }),
-          'EVM: the new_maintainer is the zero address'
+          'EVM: the newMaintainer is the zero address'
         );
       });
     });
@@ -129,7 +129,7 @@ contract('PrecompiledEVM', function (accounts) {
       it('should revert when trying to publish 0x0 contract', async function () {
         await truffleAssert.reverts(
           instance.publishContract(NULL_ADDRESS, { from: deployer }),
-          'EVM: the contract_address is the zero address'
+          'EVM: the contractAddress is the zero address'
         );
       });
 
@@ -137,7 +137,7 @@ contract('PrecompiledEVM', function (accounts) {
         truffleAssert.eventEmitted(
           await instance.publishContract(contract.address, { from: deployer }),
           'ContractPublished',
-          { contract_address: contract.address }
+          { contractAddress: contract.address }
         );
       });
     });
@@ -180,7 +180,7 @@ contract('PrecompiledEVM', function (accounts) {
         }
 
         truffleAssert.eventEmitted(await instance.developerDisable({ from: user }), 'DeveloperDisabled', {
-          account_address: user
+          accountAddress: user
         });
       });
 
@@ -221,7 +221,7 @@ contract('PrecompiledEVM', function (accounts) {
         }
 
         truffleAssert.eventEmitted(await instance.developerEnable({ from: user }), 'DeveloperEnabled', {
-          account_address: user
+          accountAddress: user
         });
       });
 
