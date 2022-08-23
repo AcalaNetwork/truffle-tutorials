@@ -5,7 +5,7 @@
   "author": "Jan Turk",
   "license": "MIT",
   "dependencies": {
-    "truffle": "^5.4.19"
+    "truffle": "^5.5.0"
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.6.0"
