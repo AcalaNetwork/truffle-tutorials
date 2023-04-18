@@ -1201,6 +1201,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/contracts@npm:4.4.2":
+  version: 4.4.2
+  resolution: "@openzeppelin/contracts@npm:4.4.2"
+  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/contracts@npm:^4.4.2, @openzeppelin/contracts@npm:^4.6.2":
   version: 4.8.2
   resolution: "@openzeppelin/contracts@npm:4.8.2"
@@ -8652,7 +8659,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "truffle-tutorial-nft@workspace:NFT"
   dependencies:
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": 4.4.2
     "@truffle/hdwallet-provider": ^1.6.0
     truffle: ^5.4.19
     truffle-assertions: ^0.9.2
