@@ -314,6 +314,7 @@ contract('AdvancedEscrow', function (accounts) {
       await api.rpc.engine.createBlock(true /* create empty */, true /* finalize it*/);
       await api.rpc.engine.createBlock(true /* create empty */, true /* finalize it*/);
       await api.rpc.engine.createBlock(true /* create empty */, true /* finalize it*/);
+      await new Promise(r => setTimeout(r, 5_000));
       const finalState = await instance.escrows(currentEscrow - 1);
 
       expect(initalState.completed).to.be.false;
