@@ -17,7 +17,6 @@
     "journey:mandalaPub": "truffle exec scripts/userJourney.js --network mandalaPub",
     "test": "truffle test",
     "test:mandala": "truffle test --network mandala",
-    "test:mandalaPub": "truffle test --network mandalaPub",
-    "test:CI": "truffle test --network mandalaCI"
+    "test:mandalaPub": "truffle test --network mandalaPub"
   }
 }
