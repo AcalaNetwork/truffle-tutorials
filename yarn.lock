@@ -1201,17 +1201,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.4.2":
-  version: 4.4.2
-  resolution: "@openzeppelin/contracts@npm:4.4.2"
-  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/contracts@npm:^4.4.2, @openzeppelin/contracts@npm:^4.6.2":
-  version: 4.8.2
-  resolution: "@openzeppelin/contracts@npm:4.8.2"
-  checksum: 1d362f0b9c880549cb82544e23fb70270fbbbe24a69e10bd5aa07649fd82347686173998ae484defafdc473d04004d519f839e3cd3d3e7733d0895b950622243
+"@openzeppelin/contracts@npm:4.9.1, @openzeppelin/contracts@npm:^4.9.1":
+  version: 4.9.1
+  resolution: "@openzeppelin/contracts@npm:4.9.1"
+  checksum: 9bb3cc6aecd6c56d5ece10d9820d43e6e9c460395b75cc4af9b4e776f1a9e56c9906bc03538b0707e617dc31f1abdfffcbeedfecc8884358d864198ed73f59c1
   languageName: node
   linkType: hard
 
@@ -8601,7 +8594,7 @@ __metadata:
   resolution: "truffle-tutorial-advanced-escrow@workspace:advanced-escrow"
   dependencies:
     "@acala-network/contracts": ^4.3.4
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": ^4.9.1
     "@polkadot/api": 8.1.1
     "@truffle/hdwallet-provider": ^1.6.0
     console.mute: ^0.3.0
@@ -8616,7 +8609,7 @@ __metadata:
   resolution: "truffle-tutorial-dex@workspace:DEX"
   dependencies:
     "@acala-network/contracts": ^4.3.4
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": ^4.9.1
     "@truffle/hdwallet-provider": ^1.6.0
     ethers: ~5.5.0
     truffle: ^5.4.19
@@ -8638,7 +8631,7 @@ __metadata:
   resolution: "truffle-tutorial-evm@workspace:EVM"
   dependencies:
     "@acala-network/contracts": ^4.3.4
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": ^4.9.1
     "@truffle/hdwallet-provider": ^1.6.0
     ethers: ~5.5.0
     truffle: ^5.4.19
@@ -8659,7 +8652,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "truffle-tutorial-nft@workspace:NFT"
   dependencies:
-    "@openzeppelin/contracts": 4.4.2
+    "@openzeppelin/contracts": 4.9.1
     "@truffle/hdwallet-provider": ^1.6.0
     truffle: ^5.4.19
     truffle-assertions: ^0.9.2
@@ -8671,7 +8664,7 @@ __metadata:
   resolution: "truffle-tutorial-precompiled-token@workspace:precompiled-token"
   dependencies:
     "@acala-network/contracts": ^4.3.4
-    "@openzeppelin/contracts": ^4.4.2
+    "@openzeppelin/contracts": ^4.9.1
     "@truffle/hdwallet-provider": ^1.6.0
     ethers: ~5.5.0
     truffle: ^5.4.19
@@ -8683,7 +8676,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "truffle-tutorial-token@workspace:token"
   dependencies:
-    "@openzeppelin/contracts": ^4.6.2
+    "@openzeppelin/contracts": ^4.9.1
     "@truffle/hdwallet-provider": ^1.6.0
     truffle: ^5.4.19
     truffle-assertions: ^0.9.2
