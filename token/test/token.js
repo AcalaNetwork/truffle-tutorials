@@ -240,10 +240,10 @@ contract('Token', function (accounts) {
 
           const response = await instance.transferFrom(deployer, user, 1000, { from: user });
 
-          const event = response.logs[1].event;
-          const sender = response.logs[1].args.from;
-          const receiver = response.logs[1].args.to;
-          const value = response.logs[1].args.value;
+          const event = response.logs[0].event;
+          const sender = response.logs[0].args.from;
+          const receiver = response.logs[0].args.to;
+          const value = response.logs[0].args.value;
 
           expect(event).to.equal('Transfer');
           expect(sender).to.equal(deployer);
@@ -256,10 +256,10 @@ contract('Token', function (accounts) {
 
           const response = await instance.transferFrom(deployer, user, 1000, { from: user });
 
-          const event = response.logs[0].event;
-          const owner = response.logs[0].args.owner;
-          const spender = response.logs[0].args.spender;
-          const value = response.logs[0].args.value;
+          const event = response.logs[1].event;
+          const owner = response.logs[1].args.owner;
+          const spender = response.logs[1].args.spender;
+          const value = response.logs[1].args.value;
 
           expect(event).to.equal('Approval');
           expect(owner).to.equal(deployer);
@@ -284,7 +284,7 @@ contract('Token', function (accounts) {
 
           await truffleAssert.reverts(
             instance.transferFrom(deployer, user, 10000, { from: user }),
-            'ERC20: insufficient allowance'
+            'transfer amount exceeds allowance'
           );
         });
 
@@ -309,7 +309,7 @@ contract('Token', function (accounts) {
         it('should revert when no allowance was given', async function () {
           await truffleAssert.reverts(
             instance.transferFrom(user, deployer, 100, { from: deployer }),
-            'ERC20: insufficient allowance'
+            'transfer amount exceeds allowance'
           );
         });
       });
