@@ -4,31 +4,25 @@
   "main": "index.js",
   "author": "Jan Turk",
   "license": "MIT",
-  "dependencies": {
-    "truffle": "^5.4.19"
-  },
   "devDependencies": {
     "@acala-network/contracts": "^4.3.4",
-    "@openzeppelin/contracts": "^4.4.2",
+    "@openzeppelin/contracts": "~4.4.2",
     "@polkadot/api": "8.1.1",
-    "@truffle/hdwallet-provider": "^1.6.0",
+    "@truffle/hdwallet-provider": "^2.1.11",
     "console.mute": "^0.3.0",
     "ethers": "~5.5.0",
+    "truffle": "^5.9.3",
     "truffle-assertions": "^0.9.2"
   },
   "scripts": {
     "build": "truffle compile",
-    "test": "truffle test",
-    "test-mandala": "truffle test --network mandala",
-    "test-mandala:pubDev": "truffle test --network mandalaPublicDev",
-    "test-mandala:CI": "truffle test --network mandalaCI",
-    "user-journey": "truffle exec scripts/userJourney.js",
-    "user-journey-mandala": "truffle exec scripts/userJourney.js --network mandala",
-    "user-journey-mandala:pubDev": "truffle exec scripts/userJourney.js --network mandalaPublicDev",
-    "user-journey-mandala:CI": "truffle exec scripts/userJourney.js --network mandalaCI",
     "deploy": "truffle migrate",
-    "deploy-mandala": "truffle migrate --network mandala",
-    "deploy-mandala:pubDev": "truffle migrate --network mandalaPublicDev",
-    "deploy-mandala:CI": "truffle migrate --network mandalaCI"
+    "deploy:mandala": "truffle migrate --network mandala",
+    "deploy:mandalaPub": "truffle migrate --network mandalaPub",
+    "journey:mandala": "truffle exec scripts/userJourney.js --network mandala",
+    "journey:mandalaPub": "truffle exec scripts/userJourney.js --network mandalaPub",
+    "test": "truffle test",
+    "test:mandala": "truffle test --network mandala",
+    "test:mandalaPub": "truffle test --network mandalaPub"
   }
 }

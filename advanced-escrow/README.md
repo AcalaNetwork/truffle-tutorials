@@ -1,24 +1,67 @@
-# Truffle example: Advanced Escrow
-
-## Table of contents
-
-- [Intro](#intro)
-- [Setting up](#setting-up)
-- [Smart contract](#smart-contract)
-- [Deploy script](#deploy-script)
-- [Test](#test)
-- [User journey](#user-journey)
-- [Conclusion](#conclusion)
-
-## Intro
-
+# Acala EVM+ Truffle Example: Advanced Escrow
 This tutorial dives into Acala EVM+ smart contract development using Truffle development framework.
-We will start with the setup, build the smart contract and write deployment, test and user journey
-scripts. The smart contract will allow users to initiate escrows in one currency, and for
+The smart contract will allow users to initiate escrows in one currency, and for
 beneficiaries to specify if they desire to be paid in another currency. Another feature we will
 familiarise ourselves with is the on-chain automation using a predeployed smart contract called
 `Schedule`. Using it will allow us to set the automatic completion of escrow after a certain number
 of blocks are included in the blockchain.
+
+## Start a Local Development Stack
+clean up docker containers
+```
+docker compose down -v
+```
+
+start the local development stack
+```
+docker compose up
+```
+
+once you see logs like this, the local development stack is ready. It's ok if there are some warnings/errors in the logs, since there is no transaction in the node yet.
+```
+ --------------------------------------------
+              🚀 SERVER STARTED 🚀
+ --------------------------------------------
+ version         : bodhi.js/eth-rpc-adapter/2.7.3
+ endpoint url    : ws://mandala-node:9944
+ subquery url    : http://graphql-engine:3001
+ listening to    : 8545
+ max blockCache  : 200
+ max batchSize   : 50
+ max storageSize : 5000
+ safe mode       : false
+ local mode      : false
+ rich mode       : false
+ http only       : false
+ verbose         : true
+ --------------------------------------------
+```
+
+For more information about the local development stack, please refer to the [doc](https://evmdocs.acala.network/network/network-setup/local-development-network).
+
+## Run
+install deps
+```
+yarn
+```
+
+compile contracts and build types
+```
+yarn build
+```
+
+run through user journey `scripts/userJourney.js`
+```
+yarn journey:mandala
+```
+
+run tests with `test/*.js`
+```
+yarn test:mandala
+```
+## Intro
+
+
 
 Let's jump right in!
 
@@ -49,95 +92,6 @@ truffle init
 In addition to initiating a Truffle project, Truffle has already created `contracts`, `migrations`
 and `test` directories that we reqiure for this tutorial.
 
-### Configure Truffle
-
-As we will be using Truffle to compile, test and deploy the smart contract, we need to configure it.
-Uncomment the following line in the `truffle-config.js`:
-
-**For me this is line 21, so even if there is any discrepancy between Truffle versions, this should
-narrow down the search.**
-
-```js
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-```
-
-As you may have noticed, we are importing `@truffle/hdwallet-provider`, so we need to add it to the
-project. Let's add it as a develoment dependency:
-
-```bash
-yarn add --dev @truffle/hdwallet-provider
-```
-
-We will be enabling a Mandala local development network by adding it to the configuration. Let's add
-the its configuration. As the public test network has the same configuration as the local
-development network, let's add a helper function to the config. Make sure to add this helper method
-above the `module.exports` (you can place it below as well, just not within). We will call it
-`mandalaConfig` and expect one argument to be passed to it. The argument passed to it is called the
-`endpointUrl` and it specifies the RPC enpoint, to which the Truffle connects to. Copy the method
-into your `truffle-config.js`:
-
-```js
-const mandalaConfig = (endpointUrl) => ({
-  provider: () =>
-    new HDWalletProvider(mnemonicPhrase, endpointUrl),
-  network_id: 595,
-  gasPrice: 0x2f82f103ea, // storage_limit = 64001, validUntil = 360001, gasLimit = 10000000
-  gas: 0x329b140,
-  timeoutBlocks: 25,
-  confirmations: 0
-});
-```
-
-Let's break down this configuration:
-
-- `provider` uses the `HDWalletProvided` that we imported. We pass the mnemonic prase, from which
-the accounts are derived, as well as the URL for the RPC endpoint of the desired network. You might
-have noticed that we haven't specified `mnemonicPhrase` anywhere just yet. Let's do it. Above the
-`mandalaConfig` add the following mnemonic:
-
-```js
-const mnemonicPhrase = 'fox sight canyon orphan hotel grow hedgehog build bless august weather swarm';
-```
-
-**NOTE: This mnemonic phrase is used in all of the examples and represents the default development
-accounts of Acala EVM+. These accounts are not safe to use and you should use your own, following
-the secret management guidelines of
-[`HDWalletProvider`](https://github.com/trufflesuite/truffle-hdwallet-provider).**
-
-Now that we analyzed the `provider`, let's move on to the other arguments:
-
-- `network_id` is the default network ID of the development Mandala network.
-- `gasPrice` is the default gas price for the local development Mandala network. Commented out
-section reperesents additional paramerters of Acala EVM+.
-- `gas` is the current gas limit for transactions.
-- `timeoutBlocks` and `confirmations` are set to our discression and we opted for the values above
-in this tutorial.
-
-To be able to use the local development network and public test network within the project, we have
-to add them to the `networks` section of the config using the `mandalaConfig` helper. We do this by
-pasting the following two lines of code into it:
-
-```js
-    mandala: mandalaConfig("http://127.0.0.1:8545"),
-    mandalaPublicDev: mandalaConfig("https://acala-mandala-adapter.api.onfinality.io/public"),
-```
-
-Now that Mandala local development network is added to our project, let's take care of the remaining
-configuration. Mocha timeout should be active, to make sure that we don't get stuck in a loop if
-something goes wrong during tests. For this line 91 (this is after the modifications) in
-`truffle-config.js` should be uncommented:
-
-```js
-    timeout: 100000
-```
-
-Lastly, let's set the compiler version to `0.8.9` as this is the Solidity version we will be using
-in our example smart contract. To do this, line 97 needs to be uncommented and modified to:
-
-```js
-      version: "0.8.9",    // Fetch exact version from solc-bin (default: truffle's version)
-```
-
 ## Smart contract
 
 The `AdvancedEscrow` smart contract, which we will add in the following section, will still leave
@@ -157,33 +111,6 @@ exchanges the AUSD it is holding in escrow for the desired tokens upon completio
 
 We also allow for the escrow to be completed before the deadline, with the ability for the
 initiating party to release the funds to the beneficiary manually.
-
-In order to add our smart contract, we will use Truffle built-in utility `create`:
-
-```solidity
-truffle create contract AdvancedEscrow
-```
-
-This command created a `HelloWorld.sol` file with a skeleton smart contract within `contracts`
-directory. First line of this smart contract, after the license definition, should specify the exact
-version of Solidity we will be using, which is `0.8.9`:
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity =0.8.9;
-
-contract AdvancedEscrow {
-
-}
-```
-
-We will be using precompiled smart contracts available in `@acala-network/contracts`  and
-`@openzeppelin/contracts` dependencies. To be able to do this, we need to add the dependencies to
-the project:
-
-```shell
-yarn add --dev @acala-network/contracts@4.2.0 @openzeppelin/contracts@4.4.2
-```
 
 As we will be using predeployed IDEX and IScheduler as well as the precompiled Token contracts, we
 need to import them after the `pragma` statement:
@@ -430,332 +357,7 @@ notifying the listeners of the completion, should be emitted:
 
 This wraps up our `AdvancedEscrow` smart contract.
 
-<details>
-	<summary>Your `contracts/AdvancedEscrow.sol` should look like this:</summary>
-
-	  // SPDX-License-Identifier: MIT
-    pragma solidity =0.8.9;
-
-    import "@acala-network/contracts/dex/IDEX.sol";
-    import "@acala-network/contracts/token/Token.sol";
-    import "@acala-network/contracts/schedule/ISchedule.sol";
-    
-    import "@acala-network/contracts/utils/MandalaAddress.sol";
-
-    contract AdvancedEscrow is ADDRESS {
-        IDEX dex = IDEX(ADDRESS.DEX);
-        ISchedule schedule = ISchedule(ADDRESS.SCHEDULE);
-
-        uint256 public numberOfEscrows;
-
-        mapping(uint256 => Escrow) public escrows;
-
-        struct Escrow {
-            address initiator;
-            address beneficiary;
-            address ingressToken;
-            address egressToken;
-            uint256 AusdValue;
-            uint256 deadline;
-            bool completed;
-        }
-
-        constructor() {
-            numberOfEscrows = 0;
-        }
-
-        event EscrowUpdate(
-            address indexed initiator,
-            address indexed beneficiary,
-            uint256 AusdValue,
-            bool fulfilled
-        );
-
-        function initiateEscrow(
-            address beneficiary_,
-            address ingressToken_,
-            uint256 ingressValue,
-            uint256 period
-        )
-            public returns (bool)
-        {
-            // Check to make sure the latest escrow is completed
-            // Additional check is needed to ensure that the first escrow can be initiated and that the
-            // guard statement doesn't underflow
-            require(
-                numberOfEscrows == 0 || escrows[numberOfEscrows - 1].completed,
-                "Escrow: current escrow not yet completed"
-            );
-            require(beneficiary_ != address(0), "Escrow: beneficiary_ is 0x0");
-            require(ingressToken_ != address(0), "Escrow: ingressToken_ is 0x0");
-            require(period != 0, "Escrow: period is 0");
-
-            uint256 contractBalance = Token(ingressToken_).balanceOf(address(this));
-            require(
-                contractBalance >= ingressValue,
-                "Escrow: contract balance is less than ingress value"
-            );
-
-            Token AUSDtoken = Token(ADDRESS.AUSD);
-            uint256 initalAusdBalance = AUSDtoken.balanceOf(address(this));
-            
-            address[] memory path = new address[](2);
-            path[0] = ingressToken_;
-            path[1] = ADDRESS.AUSD;
-            require(dex.swapWithExactSupply(path, ingressValue, 1), "Escrow: Swap failed");
-            
-            uint256 finalAusdBalance = AUSDtoken.balanceOf(address(this));
-            
-            schedule.scheduleCall(
-                address(this),
-                0,
-                1000000,
-                5000,
-                period,
-                abi.encodeWithSignature("completeEscrow()")
-            );
-
-            Escrow storage currentEscrow = escrows[numberOfEscrows];
-            currentEscrow.initiator = msg.sender;
-            currentEscrow.beneficiary = beneficiary_;
-            currentEscrow.ingressToken = ingressToken_;
-            currentEscrow.AusdValue = finalAusdBalance - initalAusdBalance;
-            currentEscrow.deadline = block.number + period;
-            numberOfEscrows += 1;
-            
-            emit EscrowUpdate(msg.sender, beneficiary_, currentEscrow.AusdValue, false);
-            
-            return true;
-        }
-
-        function setEgressToken(address egressToken_) public returns (bool) {
-            require(!escrows[numberOfEscrows - 1].completed, "Escrow: already completed");
-            require(
-                escrows[numberOfEscrows - 1].beneficiary == msg.sender,
-                "Escrow: sender is not beneficiary"
-            );
-
-            escrows[numberOfEscrows - 1].egressToken = egressToken_;
-
-            return true;
-        }
-
-        function completeEscrow() public returns (bool) {
-            Escrow storage currentEscrow = escrows[numberOfEscrows - 1];
-            require(!currentEscrow.completed, "Escrow: escrow already completed");
-            require(
-                msg.sender == currentEscrow.initiator || msg.sender == address(this),
-                "Escrow: caller is not initiator or this contract"
-            );
-
-            if(currentEscrow.egressToken != address(0)){
-                Token token = Token(currentEscrow.egressToken);
-                uint256 initialBalance = token.balanceOf(address(this));
-                
-                address[] memory path = new address[](2);
-                path[0] = ADDRESS.AUSD;
-                path[1] = currentEscrow.egressToken;
-                require(
-                    dex.swapWithExactSupply(path, currentEscrow.AusdValue, 1),
-                    "Escrow: Swap failed"
-                );
-                
-                uint256 finalBalance = token.balanceOf(address(this));
-
-                token.transfer(currentEscrow.beneficiary, finalBalance - initialBalance);
-            } else {
-                Token AusdToken = Token(ADDRESS.AUSD);
-                AusdToken.transfer(currentEscrow.beneficiary, currentEscrow.AusdValue);
-            }
-
-            currentEscrow.completed = true;
-
-            emit EscrowUpdate(
-                currentEscrow.initiator,
-                currentEscrow.beneficiary,
-                currentEscrow.AusdValue,
-                true
-            );
-
-            return true;
-        }
-    }
-
-</details>
-
-Now that we have the smart contract ready, we have to compile it. For this, we will add the `build`
-script to the `package.json`. To do this, we have to add `scripts` section to it. We will be using
-Truffle's compile functionality, so the `scripts` section should look like this:
-
-```json
-  "scripts": {
-    "build": "truffle compile"
-  }
-```
-
-When you run the `build` command using `yarn build`, the `build` directory is created and it
-contains the compiled smart contract.
-
-## Deploy script
-
-Now that we have our smart contract ready, we can deploy it, so we can use it. We can again use the
-Truffle built-in utility `create` to create a migration file:
-
-```shell
-truffle create migration AdvancedEscrow
-```
-
-The utility created a barebones migration file in the `migrations` folder. First thing we need to do
-is import our smart contract into it. We do this with the following line of code at the top of the
-file:
-
-```js
-const AdvancedEscrow = artifacts.require('AdvancedEscrow');
-```
-
-To make sure that our migration will successfully deploy our smart contract, we have to make sure
-that our `deployer` is ready. To do that, we need to modfy the deployment function to be
-asynchronous. Replace the 3rd line of the migration with:
-
-```js
-module.exports = async function (deployer) {
-```
-
-Now that we have the smart contract imported within the migration, we can deploy the smart contract.
-We do this by invoking `deployer`, which is defined in the definition of the function. Additionally
-we will output the address of the deployed smart contract:
-
-```js
-  console.log('Deploy AdvancedEscrow');
-
-  await deployer.deploy(AdvancedEscrow);
-
-  console.log(`Advanced escrow deployed at: ${AdvancedEscrow.address}`);
-```
-
-This completes our migration and allows us to deploy the example smart contract as well as run tests
-for it.
-
-To run the migration and deploy the smart contract, we have to add the scripts to deploy the smart
-contract to the local development network as well as public Mandala test network. To do this, we 
-have to add them to the `scripts` section of the `package.json`:
-
-```json
-    "deploy-mandala": "truffle migrate --network mandala",
-    "deploy-mandala:pubDev": "truffle migrate --network mandalaPublicDev"
-```
-
-Deploying the `AdvancedEscrow` smart contract using `yarn deploy-mandala` command should return the
-following output:
-
-```shell
-yarn deploy-mandala
-
-
-yarn run v1.22.18
-$ truffle migrate --network mandala
-
-Compiling your contracts...
-===========================
-> Compiling ./../DEX/contracts/PrecompiledDEX.sol
-> Artifacts written to /Users/jan/Acala/truffle-tutorials/AdvancedEscrow/build/contracts
-> Compiled successfully using:
-   - solc: 0.8.9+commit.e5eed63a.Emscripten.clang
-
-
-Starting migrations...
-======================
-> Network name:    'mandala'
-> Network id:      595
-> Block gas limit: 15000000 (0xe4e1c0)
-
-
-1_initial_migration.js
-======================
-
-   Deploying 'Migrations'
-   ----------------------
-   > transaction hash:    0x315d14d6fd5e6640b981537044b653774002bcfbbe9ff8cc8f6c54502328c8bc
-   > Blocks: 0            Seconds: 0
-   > contract address:    0x46CD18A2CE038D21b78dC3EF470CCf9Dc586AEa4
-   > block number:        3871
-   > block timestamp:     1652125822
-   > account:             0x75E480dB528101a381Ce68544611C169Ad7EB342
-   > balance:             9967868.909147408268
-   > gas used:            250142 (0x3d11e)
-   > gas price:           10770.794810139 gwei
-   > value sent:          0 ETH
-   > total cost:          2.694228155397789738 ETH
-
-   > Saving migration to chain.
-   > Saving artifacts
-   -------------------------------------
-   > Total cost:     2.694228155397789738 ETH
-
-
-1651609607_advanced_escrow.js
-=============================
-Deploy AdvancedEscrow
-
-   Deploying 'AdvancedEscrow'
-   --------------------------
-   > transaction hash:    0x21a8bf1d1ec696d9ca0e2cf2a02919ea73483533b630392db596cfa59d18e7d0
-   > Blocks: 0            Seconds: 0
-   > contract address:    0xF49B534C00Fbeb4E7B055BCbAcDAC161BC4090F5
-   > block number:        3873
-   > block timestamp:     1652125834
-   > account:             0x75E480dB528101a381Ce68544611C169Ad7EB342
-   > balance:             9967865.664529159889
-   > gas used:            2262155 (0x22848b)
-   > gas price:           2010.260490745 gwei
-   > value sent:          0 ETH
-   > total cost:          4.547520820441255475 ETH
-
-Advanced escrow deployed at: 0xF49B534C00Fbeb4E7B055BCbAcDAC161BC4090F5
-   > Saving migration to chain.
-   > Saving artifacts
-   -------------------------------------
-   > Total cost:     4.547520820441255475 ETH
-
-Summary
-=======
-> Total deployments:   2
-> Final cost:          7.241748975839045213 ETH
-
-
-✨  Done in 5.64s.
-```
-
 ## Test
-
-To add a test for the smart contract, we can again use the Truffle built-in `create` utility:
-
-```shell
-truffle create test AdvancedEscrow
-```
-
-At the beginning of the file, we will be importing all of the constants and methods that we will
-require to successfully run the tests. The predeploy smart contract addresses are imported from
-`@acala-network/contracts` `ADDRESS` utility. We require the compiled artifacts of the smart
-contracts that we will be using within the test. This is why we assign them to the `AdvancedEscrow`,
-`PrecompiledToken` and `PrecompiledDEX` constants. In order to be able to test the block based
-deadlines, we need the ability to force the block generation within tests. For this reason, we
-import the `ApiPromise` and `WsProvider` from `@polkadot/api`, which we need to add to the project.
-As initating the `ApiPromise` generates a lot of output, our test output wolud get very messy if we
-didn't silence it. To do this we use the `console.mute` dependency, that we have to add to the
-project, along with `@polkadot/api`, by using:
-
-```shell
-yarn add --dev console.mute @polkadot/api
-```
-
-In order to be able to validate the expected reverts and event emissions, we will use
-`truffleAssert` method from `truffle-assertions` dependency, which we import using:
-
-```shell
-yarn add --dev truffle-assertions
-```
-
 To be able to easily validate things dependent on `0x0` address, we assign it to the `NULL_ADDRESS`
 constant. Lastly we configure the `ENDPOINT_URL` constant to be used by the `provider`. And
 instantiate the `WsProvider` to the `provider` constant. The test file with import statements and an
@@ -1535,12 +1137,13 @@ Advanced escrow deployed at: 0x952F4783C042f51B8FD6325eFA88563e21210C9b
 
 ## User journey
 
-Finally we are able to simulate the user journey through the `AdvancedEscrow`. We will create
-another script in the `scripts` directory called  `userJourney.js` and add three scenarios to it:
+Finally we are able to simulate the user journey through the `AdvancedEscrow`. We have three scenarios to it:
 
-Beneficiary accepts the funds in aUSD and the escrow is released by `Schedule` predeployed smart
-contract. Beneficiary accepts the funds in aUSD and the escrow is released by the initiator of the
-escrow, before it is released by the `Schedule`. Beneficiary decides to get paid in DOT and the
+- Beneficiary accepts the funds in aUSD and the escrow is released by `Schedule` predeployed smart
+contract.
+- Beneficiary accepts the funds in aUSD and the escrow is released by the initiator of the
+escrow, before it is released by the `Schedule`. 
+- Beneficiary decides to get paid in DOT and the
 escrow is released by the `Schedule`.
 
 The simulation script will be called `userJourney.js` and will reside in the `scripts/` folder:
@@ -1549,7 +1152,7 @@ The simulation script will be called `userJourney.js` and will reside in the `sc
 touch scripts/userJourney.js
 ```
 
-The empty user journey script starts with the imports of  `AdvancedEscrow` and the precompiled
+The user journey script starts with the imports of  `AdvancedEscrow` and the precompiled
 `TokenContract` from `@acala-network/contracts`. Next we import the addresses of the `ACA`, `AUSD`
 amd `DOT` predeployed token smart contracts, the `formatUnits` utility from `ethers` and
 `ApiPromise` and `WsProvider` from `@polkadot/api`. Finally we have to prepare the `ENDPOINT_URL` of
@@ -2081,148 +1684,9 @@ This concludes our script.
 
 </details>
 
-To be able to run the user journey script, we have to add two additional commands to the `"scripts”`
-section of  `package.json`:
-
-```json
-    "user-journey-mandala": "truffle exec scripts/userJourney.js --network mandala",
-    "user-journey-mandala:pubDev": "truffle exec scripts/userJourney.js --network mandalaPublicDev"
-```
-
-These two commands allow us to run the user journey script in the local development network and in
-the public development network.
-
-Running the `yarn user-journey-mandala` script should return the following output:
-
-```shell
-yarn user-journey-mandala
-
-
-yarn run v1.22.18
-$ truffle exec scripts/userJourney.js --network mandala
-Using network 'mandala'.
-
-2022-05-10 00:33:58        REGISTRY: Unknown signed extensions SetEvmOrigin found, treating them as no-effect
-2022-05-10 00:33:58        API/INIT: RPC methods not decorated: evm_call, evm_estimateResources, oracle_getAllValues, oracle_getValue, tokens_queryExistentialDeposit
-
-
-Starting user journey
-
-
-Address of the initiator is 0x75E480dB528101a381Ce68544611C169Ad7EB342
-Address of the beneficiary is 0x0085560b24769dAC4ed057F1B2ae40746AA9aAb6
-
-
-Deploying AdvancedEscrow smart contract
-AdvancedEscrow is deployed at address 0xbF4b38dC347Afe4fCEE0d468CAf62206ACA90C25
-
-
-Instantiating ACA predeployed smart contract
-Initial initator Acala token balance: 9967862.42006935056 ACA
-
-
-Scenario #1: Escrow funds are released by Schedule
-
-
-Transferring primary token to Escrow instance
-Initiating escrow
-Escrow initiation successful in block 3877. Expected automatic completion in block 3887
-Escrow initiator: 0x75E480dB528101a381Ce68544611C169Ad7EB342
-Escrow beneficiary: 0x0085560b24769dAC4ed057F1B2ae40746AA9aAb6
-Escrow ingress token: 0x0000000000000000000100000000000000000000
-Escrow egress token: 0x0000000000000000000000000000000000000000
-Escrow AUSD value: 19812638834622
-Escrow deadline: 3887
-Escrow completed: false
-
-
-Instantiating AUSD instance
-Initial AUSD balance of beneficiary: 10004219.6987726134 AUSD
-Waiting for automatic release of funds
-Still waiting. Current block number is 3877. Target block number is 3887
-Still waiting. Current block number is 3877. Target block number is 3887
-Still waiting. Current block number is 3878. Target block number is 3887
-Still waiting. Current block number is 3879. Target block number is 3887
-Still waiting. Current block number is 3880. Target block number is 3887
-Still waiting. Current block number is 3881. Target block number is 3887
-Still waiting. Current block number is 3882. Target block number is 3887
-Still waiting. Current block number is 3883. Target block number is 3887
-Still waiting. Current block number is 3883. Target block number is 3887
-Still waiting. Current block number is 3885. Target block number is 3887
-Still waiting. Current block number is 3886. Target block number is 3887
-Still waiting. Current block number is 3887. Target block number is 3887
-Final AUSD balance of beneficiary: 10004239.511411448022 AUSD
-Beneficiary AUSD balance has increased for 19.812638834688 AUSD
-
-
-Scenario #2: Escrow initiator releases the funds before the deadline
-
-
-Initiating escrow
-Escrow initiation successfull in block 3890. Expected automatic completion in block 3900.
-Escrow initiator: 0x75E480dB528101a381Ce68544611C169Ad7EB342
-Escrow beneficiary: 0x0085560b24769dAC4ed057F1B2ae40746AA9aAb6
-Escrow ingress token: 0x0000000000000000000100000000000000000000
-Escrow egress token: 0x0000000000000000000000000000000000000000
-Escrow AUSD value: 198104742797684
-Escrow deadline: 3900
-Escrow completed: false
-Initial AUSD balance of beneficiary: 10004239.511411448022 AUSD
-Manually releasing the funds
-Escrow funds released at block 3891, while deadline was 3900
-Final AUSD balance of beneficiary: 10004437.616154245706 AUSD
-Beneficiary AUSD balance has increased for 198.104742797312 AUSD
-
-
-Scenario #3: Beneficiary decided to be paid out in DOT
-
-
-Initiating escrow
-Escrow initiation successful in block 3892. Expected automatic completion in block 3902
-Escrow initiator: 0x75E480dB528101a381Ce68544611C169Ad7EB342
-Escrow beneficiary: 0x0085560b24769dAC4ed057F1B2ae40746AA9aAb6
-Escrow ingress token: 0x0000000000000000000100000000000000000000
-Escrow egress token: 0x0000000000000000000000000000000000000000
-Escrow AUSD value: 198065379354743
-Escrow deadline: 3902
-Escrow completed: false
-Beneficiary setting the desired escrow egress token
-Instantiating DOT instance
-Initial DOT balance of beneficiary: 10000019.039861390087 DOT
-Waiting for automatic release of funds
-Still waiting. Current block number is 3893. Target block number is 3902.
-Still waiting. Current block number is 3893. Target block number is 3902.
-Still waiting. Current block number is 3894. Target block number is 3902.
-Still waiting. Current block number is 3895. Target block number is 3902.
-Still waiting. Current block number is 3896. Target block number is 3902.
-Still waiting. Current block number is 3897. Target block number is 3902.
-Still waiting. Current block number is 3898. Target block number is 3902.
-Still waiting. Current block number is 3899. Target block number is 3902.
-Still waiting. Current block number is 3900. Target block number is 3902.
-Still waiting. Current block number is 3901. Target block number is 3902.
-Still waiting. Current block number is 3902. Target block number is 3902.
-Final DOT balance of beneficiary: 12
-Beneficiary DOT balance has increased by 3.949030729728 DOT
-
-
-User journey completed!
-✨  Done in 6.78s.
-```
-
 ## Conclusion
+We have successfully built an `AdvancedEscrow` smart contract that allows users to deposit funds in one token and is paid out in another. It also supports automatic release of funds after a desired number of blocks. 
 
-We have successfully built an `AdvancedEscrow` smart contract that allows users to deposit funds in
-one token and to be paid out in another. It also supports automatic release of funds after a desired
-number of blocks. We added scripts and commands to run those scripts. To compile the smart contract,
-use `yarn build`. In order to deploy the smart contract to a local development network use
-`yarn deploy-mandala` and to deploy it to a public test network use `yarn deploy-mandala:pubDev`.
-We also created a script that simulates the user's journey through the use of the `AdvancedEscrow`.
-To run the script in the local development network use `yarn user-journey-mandala` and to run it on
-the public test network use `yarn user-journey-mandala:pubDev`. We also created a test script that
-can be run in the local development network using `yarn test-mandala` or in the public test network
-using `yarn test-mandala:pubDev`.
-
-This concludes our  `AdvancedEscrow` tutorial. We hope you enjoyed this dive into Acala EVM+ and
-have gotten a satisfying glimpse of what the **+** stands for.
+This concludes our  `AdvancedEscrow` tutorial. We hope you enjoyed this dive into Acala EVM+ and have gotten a satisfying glimpse of what the **+** stands for.
 
 All of the Acalanauts wish you a pleasant journey into the future of web3!
