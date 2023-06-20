@@ -6,7 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "@acala-network/contracts": "^4.3.4",
-    "@openzeppelin/contracts": "~4.4.2",
+    "@openzeppelin/contracts": "~4.9.2",
     "@truffle/hdwallet-provider": "^2.1.11",
     "ethers": "~5.5.0",
     "truffle": "^5.9.3"

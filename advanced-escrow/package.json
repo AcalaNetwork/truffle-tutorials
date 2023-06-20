@@ -6,7 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "@acala-network/contracts": "^4.3.4",
-    "@openzeppelin/contracts": "~4.4.2",
+    "@openzeppelin/contracts": "~4.9.2",
     "@polkadot/api": "8.1.1",
     "@truffle/hdwallet-provider": "^2.1.11",
     "console.mute": "^0.3.0",
