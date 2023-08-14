@@ -181,7 +181,7 @@ contract('Token', function (accounts) {
 
           const allowance = await instance.allowance(user, deployer);
 
-          expect(allowance.toNumber()).to.equal(50);
+          expect(allowance.toNumber()).to.equal(123321);
         });
       });
 
