@@ -123,11 +123,11 @@ import "@acala-network/contracts/schedule/ISchedule.sol";
 
 As each of the predeployed smart contracts has a predetermined address, we can use one of the
 `Address` utlities of `@acala-network/contracts` dependency to set them in our smart contract. There
-are the `AcalaAddress`, the `KaruraAddress` and the `MandalaAddress` utilities. We can use the
-`MandalaAddress` in this example:
+are the `AcalaAddress`, the `KaruraAddress` and the `MandalaTokens` utilities. We can use the
+`MandalaTokens` in this example:
 
 ```solidity
-import "@acala-network/contracts/utils/MandalaAddress.sol";
+import "@acala-network/contracts/utils/MandalaTokens.sol";
 ```
 
 Now that we have sorted out all of the imports, we need to make sure that our `AdvancedEscrow` smart
@@ -372,7 +372,7 @@ const { ApiPromise, WsProvider } = require('@polkadot/api');
 const truffleAssert = require('truffle-assertions');
 require('console.mute');
 
-const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
+const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaTokens');
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
 const provider = new WsProvider(ENDPOINT_URL);
@@ -758,7 +758,7 @@ This concludes our test.
     const truffleAssert = require('truffle-assertions');
     require('console.mute');
 
-    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaAddress');
+    const { ACA, AUSD, DOT, DEX } = require('@acala-network/contracts/utils/MandalaTokens');
     const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
     const ENDPOINT_URL = process.env.ENDPOINT_URL || 'ws://127.0.0.1:9944';
     const provider = new WsProvider(ENDPOINT_URL);
@@ -1163,7 +1163,7 @@ imports, constants and the empty script should look like this:
 const AdvancedEscrow = artifacts.require('AdvancedEscrow');
 const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaAddress');
+const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaTokens');
 const { formatUnits } = require('ethers/lib/utils');
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
@@ -1472,7 +1472,7 @@ This concludes our script.
     const AdvancedEscrow = artifacts.require('AdvancedEscrow');
     const TokenContract = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaAddress');
+    const { ACA, AUSD, DOT } = require('@acala-network/contracts/utils/MandalaTokens');
     const { formatUnits } = require('ethers/lib/utils');
     const { ApiPromise, WsProvider } = require('@polkadot/api');
 

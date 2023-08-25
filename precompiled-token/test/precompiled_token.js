@@ -1,6 +1,6 @@
 const PrecompiledToken = artifacts.require('@acala-network/contracts/build/contracts/Token');
 
-const { ACA } = require('@acala-network/contracts/utils/MandalaAddress');
+const { ACA } = require('@acala-network/contracts/utils/MandalaTokens');
 
 /*
  * uncomment accounts to access the test accounts made available by the
