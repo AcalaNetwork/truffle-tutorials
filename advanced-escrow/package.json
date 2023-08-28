@@ -5,7 +5,7 @@
   "author": "Jan Turk",
   "license": "MIT",
   "devDependencies": {
-    "@acala-network/contracts": "^4.3.4",
+    "@acala-network/contracts": "^4.4.1",
     "@openzeppelin/contracts": "~4.4.2",
     "@polkadot/api": "8.1.1",
     "@truffle/hdwallet-provider": "^2.1.11",
